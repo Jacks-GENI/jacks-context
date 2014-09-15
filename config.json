@@ -1,0 +1,14 @@
+{
+  "advanced": {
+    "hardware": ["switch", "lan", "delay-dl360", "pcvm", "dl360-vm", "delay",
+		 "dl360-G7", "interconnect-vm", "interconnect", "ipv4"],
+    "link_types": ["ethernet-procurve2", "ethernet-100000", "ethernet-1000000",
+		   "ethernet-bce", "ethernet-generic_1G"]
+  },
+  "defaults": [
+    {
+      "name": "Xen VM",
+      "type": "emulab-xen"
+    }
+  ]
+}
