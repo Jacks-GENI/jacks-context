@@ -1,18 +1,17 @@
-jacks-context
-=============
+# jacks-context
 
 A script to automatically generate a context for passing into Jacks, including both constraints and canvas options.
 
-== Requires ==
+## Requires
 
 * geni-lib: [Source](https://bitbucket.org/barnstorm/geni-lib/src), [Install instructions](http://groups.geni.net/geni/wiki/HowTo/SetupGENILIB)
 
-== Manifest ==
+## Manifest
 
 config.json -- Sample configuration file
 jacks-context.py -- The script itself
 
-== Usage ==
+## Usage
 
 Make sure that you have a geni-lib config.py in the same directory as
 your script. Run it as follows:
