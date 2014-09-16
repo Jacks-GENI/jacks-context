@@ -92,7 +92,9 @@ def calculate_type_image(is_basic, ads):
       pair.newNode()
       for sliver_name, images in node.images.iteritems():
         for image in images:
-          pair.addPair(sliver_name, image.name)
+          if not is_basic or (not sliver_name in advanced_types and
+                              not image.name in advanced_images):
+            pair.addPair(sliver_name, image.name)
     for sliver_name, image_name in pair.getPairs(is_basic):
       result.append({
         'node': {
@@ -113,7 +115,9 @@ def calculate_type_hardware(is_basic, ads):
       pair.newNode()
       for hardware_name, slots in node.hardware_types.iteritems():
         for sliver_name in node.sliver_types:
-          pair.addPair(sliver_name, hardware_name)
+          if not is_basic or (not sliver_name in advanced_types and
+                              not hardware_name in advanced_hardware):
+            pair.addPair(sliver_name, hardware_name)
     for sliver_name, hardware_name in pair.getPairs(is_basic):
       result.append({
         'node': {

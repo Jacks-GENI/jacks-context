@@ -9,6 +9,10 @@
     {
       "name": "Xen VM",
       "type": "emulab-xen"
+    },
+    {
+      "name": "Raw PC",
+      "type": "emulab-rawpc"
     }
   ]
 }
