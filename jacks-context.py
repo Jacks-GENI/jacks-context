@@ -11,6 +11,7 @@ import sys
 import config
 import geni.aggregate.instageni as IG
 import geni.aggregate.exogeni as EXO
+import geni.aggregate.opengeni as OG
 from geni.rspec.pgad import Advertisement
 
 defaults = []
@@ -233,6 +234,7 @@ def get_advertisement (context, site, pipe):
 def do_parallel (is_basic=True, sites=[], output=None):
   igmapping = IG.name_to_aggregate()
   exomapping = EXO.name_to_aggregate()
+  ogmapping = OG.name_to_aggregate()
   children = []
   pipes = []
   ads = []
@@ -242,6 +244,8 @@ def do_parallel (is_basic=True, sites=[], output=None):
       site = igmapping[site_name]
     elif site_name in exomapping:
       site = exomapping[site_name]
+    elif site_name in ogmapping:
+      site = ogmapping[site_name]
     if site:
       pipe_parent, pipe_child = MP.Pipe(False)
       pipes.append(pipe_parent)
