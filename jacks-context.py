@@ -94,9 +94,12 @@ def calculate_type_image(is_basic, ads):
       pair.newNode()
       for sliver_name, images in node.images.iteritems():
         for image in images:
+          imageId = image.url
+          if imageId is None:
+            imageId = image.name
           if not is_basic or (not sliver_name in advanced_types and
-                              not image.name in advanced_images):
-            pair.addPair(sliver_name, image.name)
+                              not imageId in advanced_images):
+            pair.addPair(sliver_name, imageId)
     for sliver_name, image_name in pair.getPairs(is_basic):
       result.append({
         'node': {
@@ -163,13 +166,16 @@ def calculate_images(is_basic, ads):
     for node in ad.nodes:
       for sliver_name, images in node.images.iteritems():
         for image in images:
-          if not image.name in found:
+          imageId = image.url
+          if imageId is None:
+            imageId = image.name
+          if not imageId in found:
             description = image.description
             if description is None:
-              description = image.name
-            result.append({ 'id': image.name,
+              description = imageId
+            result.append({ 'id': imageId,
                             'name': description })
-            found[image.name] = 1
+            found[imageId] = 1
   return result
 
 def calculate_hardware(is_basic, ads):
