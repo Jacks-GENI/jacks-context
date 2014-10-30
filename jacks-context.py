@@ -14,7 +14,7 @@ import geni.aggregate.exogeni as EXO
 import geni.aggregate.opengeni as OG
 from geni.rspec.pgad import Advertisement
 
-defaults = []
+extra = {}
 advanced_types = []
 advanced_hardware = []
 advanced_images = []
@@ -84,6 +84,16 @@ def calculate_constraints(is_basic, ads):
   result.extend(calculate_type_link(is_basic, ads))
   return result
 
+def get_image_id(image):
+  #imageId = image.url
+  #if imageId is None:
+  #  imageId = image.name
+  urn = image.name
+  id = urn.split('+')[-1]
+  imageId = 'urn:publicid:IDN+emulab.net+image+' + id
+  return imageId
+
+
 def calculate_type_image(is_basic, ads):
   cmurn = ''
   result = []
@@ -94,9 +104,7 @@ def calculate_type_image(is_basic, ads):
       pair.newNode()
       for sliver_name, images in node.images.iteritems():
         for image in images:
-          imageId = image.url
-          if imageId is None:
-            imageId = image.name
+          imageId = get_image_id(image)
           if not is_basic or (not sliver_name in advanced_types and
                               not imageId in advanced_images):
             pair.addPair(sliver_name, imageId)
@@ -140,12 +148,24 @@ def calculate_type_link(is_basic, ads):
 ##########################################################################
 
 def calculate_canvas(is_basic, ads):
-  return { 'types': calculate_types(is_basic, ads),
-           'images': calculate_images(is_basic, ads),
-           'hardware': calculate_hardware(is_basic, ads),
-           'aggregates': calculate_aggregates(is_basic, ads),
-           'linkTypes': calculate_link_types(is_basic, ads),
-           'defaults': defaults }
+  result = {
+    'defaults': [],
+    'icons': [],
+    'types': [],
+    'images': [],
+    'hardware': [],
+    'aggregates': [],
+    'linkTypes': []
+    }
+  for key, value in result.iteritems():
+    if key in extra:
+      result[key].extend(extra[key])
+  result['types'].extend(calculate_types(is_basic, ads))
+  result['images'].extend(calculate_images(is_basic, ads))
+  result['hardware'].extend(calculate_hardware(is_basic, ads))
+  result['aggregates'].extend(calculate_aggregates(is_basic, ads))
+  result['linkTypes'].extend(calculate_link_types(is_basic, ads))
+  return result
 
 def calculate_types(is_basic, ads):
   found = make_initial_found(is_basic, advanced_types)
@@ -166,9 +186,7 @@ def calculate_images(is_basic, ads):
     for node in ad.nodes:
       for sliver_name, images in node.images.iteritems():
         for image in images:
-          imageId = image.url
-          if imageId is None:
-            imageId = image.name
+          imageId = get_image_id(image)
           if not imageId in found:
             description = image.description
             if description is None:
@@ -282,7 +300,7 @@ def do_parallel (is_basic=True, sites=[], output=None):
   sys.stderr.write("Processing complete\n")
 
 def parse_config(file, is_basic):
-  global advanced_types, advanced_hardware, advanced_images, advanced_link_types, defaults
+  global advanced_types, advanced_hardware, advanced_images, advanced_link_types, extra
   f = open(file, 'r')
   jsonText = f.read()
   f.close()
@@ -294,10 +312,10 @@ def parse_config(file, is_basic):
       advanced_hardware = config['advanced']['hardware']
     if 'images' in config['advanced']:
       advanced_images = config['advanced']['images']
-    if 'link_types' in config['advanced']:
-      advanced_link_types = config['advanced']['link_types']
-  if 'defaults' in config:
-    defaults = config['defaults']
+    if 'linkTypes' in config['advanced']:
+      advanced_link_types = config['advanced']['linkTypes']
+  if 'extra' in config:
+    extra = config['extra']
 
 if __name__ == '__main__':
   parser = ArgumentParser()
