@@ -12,6 +12,7 @@ import config
 import geni.aggregate.instageni as IG
 import geni.aggregate.exogeni as EXO
 import geni.aggregate.opengeni as OG
+import geni.aggregate.protogeni as PG
 from geni.rspec.pgad import Advertisement
 
 extra = {}
@@ -259,6 +260,7 @@ def do_parallel (is_basic=True, sites=[], output=None):
   igmapping = IG.name_to_aggregate()
   exomapping = EXO.name_to_aggregate()
   ogmapping = OG.name_to_aggregate()
+  pgmapping = PG.name_to_aggregate()
   children = []
   pipes = []
   ads = []
@@ -270,6 +272,8 @@ def do_parallel (is_basic=True, sites=[], output=None):
       site = exomapping[site_name]
     elif site_name in ogmapping:
       site = ogmapping[site_name]
+    elif site_name in pgmapping:
+      site = pgmapping[site_name]
     if site:
       pipe_parent, pipe_child = MP.Pipe(False)
       pipes.append(pipe_parent)
