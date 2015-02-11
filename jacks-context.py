@@ -103,6 +103,17 @@ def calculate_type_image(is_basic, ads):
     for node in ad.nodes:
       cmurn = node.component_manager_id
       pair.newNode()
+      slivernames = []
+      for name in node.sliver_types:
+        slivernames.append(name)
+      if len(slivernames) > 0:
+        result.append({
+          'node': {
+            'types': slivernames,
+            'images': ['!'],
+            'aggregates': [cmurn]
+          }
+        })
       for sliver_name, images in node.images.iteritems():
         for image in images:
           imageId = get_image_id(image)
@@ -127,6 +138,31 @@ def calculate_type_hardware(is_basic, ads):
     for node in ad.nodes:
       cmurn = node.component_manager_id
       pair.newNode()
+      
+      slivernames = []
+      for name in node.sliver_types:
+        slivernames.append(name)
+      if len(slivernames) > 0:
+        result.append({
+          'node': {
+            'types': slivernames,
+            'hardware': ['!'],
+            'aggregates': [cmurn]
+          }
+        })
+
+      hardwarenames = []
+      for name, slots in node.hardware_types.iteritems():
+        hardwarenames.append(name)
+      if len(hardwarenames) > 0:
+        result.append({
+          'node': {
+            'types': ['!'],
+            'hardware': hardwarenames,
+            'aggregates': [cmurn]
+          }
+        })
+
       for hardware_name, slots in node.hardware_types.iteritems():
         for sliver_name in node.sliver_types:
           if not is_basic or (not sliver_name in advanced_types and
@@ -214,11 +250,15 @@ def calculate_aggregates(is_basic, ads):
   result = []
   for ad in ads:
     for node in ad.nodes:
-      name = node.component_manager_id
-      if not name in found:
-        result.append({ 'id': name,
+      urn = node.component_manager_id
+      name = urn
+      pieces = urn.split('+')
+      if len(pieces) >= 1:
+        name = pieces[1]
+      if not urn in found:
+        result.append({ 'id': urn,
                         'name': name })
-        found[name] = 1
+        found[urn] = 1
   return result
 
 def calculate_link_types(is_basic, ads):
@@ -286,8 +326,12 @@ def do_parallel (is_basic=True, sites=[], output=None):
     pipe = pipes[i]
     try:
       adTexts = pipe.recv()
+      #f = open('ads.txt', 'w+')
       for adText in adTexts:
+        #f.write(adText)
+        #f.write('\n\n\n\n')
         ads.append(Advertisement(xml=adText))
+      #f.close()
     except EOFError, e:
       pass
     child.join()
