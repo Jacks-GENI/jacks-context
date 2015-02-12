@@ -124,12 +124,18 @@
   "nomac_images": {
     "urn:publicid:IDN+emulab.net+image+emulab-ops:Ubuntu12-64-OVS": true
   },
+  "link_info": {
+    "local": ["lan"],
+    "tunnel": ["gre-tunnel", "egre-tunnel"],
+    "stitch-ig": ["vlan"],
+    "stitch-eg": ["!"]
+  },
   "stitchable_ig": [
     "urn:publicid:IDN+utahddc.geniracks.net+authority+cm",
-    "urn:publicid:IDN+instageni.nysernet.org+authority+cm",
+    "urn:publicid:IDN+instageni.nysernet.org+authority+cm"
   ],
   "stitchable_eg": [
     "urn:publicid:IDN+exogeni.net:fiuvmsite+authority+am",
-    "urn:publicid:IDN+exogeni.net:uflvmsite+authority+am",
+    "urn:publicid:IDN+exogeni.net:uflvmsite+authority+am"
   ]
 }

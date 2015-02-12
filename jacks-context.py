@@ -23,6 +23,12 @@ advanced_link_types = []
 nomac_images = {}
 stitchable_ig = []
 stitchable_eg = []
+link_info = {
+  'local': [],
+  'tunnel': [],
+  'stitch-ig': [],
+  'stitch-eg': []
+}
 
 context = config.buildContext()
 
@@ -81,11 +87,11 @@ class ConstraintPair:
           result.append((a, b))
     return result
 
-def calculate_constraints(is_basic, ads):
+def calculate_constraints(is_basic, ads, aggregateNames):
   result = []
   result.extend(calculate_type_image(is_basic, ads))
   result.extend(calculate_type_hardware(is_basic, ads))
-  result.extend(calculate_type_link(is_basic, ads))
+  result.extend(calculate_type_link(is_basic, ads, aggregateNames))
   return result
 
 def get_image_id(image):
@@ -181,10 +187,28 @@ def calculate_type_hardware(is_basic, ads):
       })
   return result
 
-def calculate_type_link(is_basic, ads):
+def calculate_type_link(is_basic, ads, aggregateNames):
   result = []
-  add_stitchable_constraints(stitchable_ig, 'vlan', result)
-  add_stitchable_constraints(stitchable_eg, '!', result)
+  if len(link_info['stitch-ig']) > 0:
+    add_stitchable_constraints(stitchable_ig,
+                               link_info['stitch-ig'], result)
+  if len(link_info['stitch-eg']) > 0:
+    add_stitchable_constraints(stitchable_eg,
+                               link_info['stitch-eg'], result)
+  if len(link_info['tunnel']) > 0:
+    result.append({
+      'node': { 'aggregates': ['*'] },
+      'link': { 'linkTypes': link_info['tunnel'] },
+      'node2': { 'aggregates': ['*'] }
+    })
+  if len(link_info['local']) > 0:
+    for urn in aggregateNames:
+      result.append({
+        'node': { 'aggregates': [urn] },
+        'link': { 'linkTypes': link_info['local'] },
+        'node2': { 'aggregates': [urn] }
+      })
+
   return result
 
 def add_stitchable_constraints(list, linkType, result):
@@ -212,7 +236,7 @@ def find_not(list, without):
 
 ##########################################################################
 
-def calculate_canvas(is_basic, ads):
+def calculate_canvas(is_basic, ads, aggregateNames):
   result = {
     'defaults': [],
     'icons': [],
@@ -228,7 +252,7 @@ def calculate_canvas(is_basic, ads):
   result['types'].extend(calculate_types(is_basic, ads))
   result['images'].extend(calculate_images(is_basic, ads))
   result['hardware'].extend(calculate_hardware(is_basic, ads))
-  result['aggregates'].extend(calculate_aggregates(is_basic, ads))
+  result['aggregates'].extend(calculate_aggregates(is_basic, ads, aggregateNames))
   result['linkTypes'].extend(calculate_link_types(is_basic, ads))
   return result
 
@@ -276,7 +300,7 @@ def calculate_hardware(is_basic, ads):
           found[name] = 1
   return result
 
-def calculate_aggregates(is_basic, ads):
+def calculate_aggregates(is_basic, ads, aggregateNames):
   found = {}
   result = []
   for ad in ads:
@@ -287,6 +311,7 @@ def calculate_aggregates(is_basic, ads):
       if len(pieces) >= 1:
         name = pieces[1]
       if not urn in found:
+        aggregateNames.append(urn)
         result.append({ 'id': urn,
                         'name': name })
         found[urn] = 1
@@ -314,8 +339,11 @@ def make_initial_found(is_basic, advanced_list):
 ##########################################################################
 
 def calculate_context(is_basic, ads):
-  return {'canvasOptions': calculate_canvas(is_basic, ads),
-          'constraints': calculate_constraints(is_basic, ads) }
+  aggregateNames = []
+  canvas = calculate_canvas(is_basic, ads, aggregateNames)
+  constraints = calculate_constraints(is_basic, ads, aggregateNames)
+  return {'canvasOptions': canvas,
+          'constraints': constraints }
 
 def get_advertisement (context, site, pipe):
   try:
@@ -379,7 +407,7 @@ def do_parallel (is_basic=True, sites=[], output=None):
   sys.stderr.write("Processing complete\n")
 
 def parse_config(file, is_basic):
-  global advanced_types, advanced_hardware, advanced_images, advanced_link_types, extra, nomac_images, stitchable_ig, stitchable_eg
+  global advanced_types, advanced_hardware, advanced_images, advanced_link_types, extra, nomac_images, stitchable_ig, stitchable_eg, link_info
   f = open(file, 'r')
   jsonText = f.read()
   f.close()
@@ -401,6 +429,8 @@ def parse_config(file, is_basic):
     stitchable_ig = config['stitchable_ig']
   if 'stitchable_eg' in config:
     stitchable_eg = config['stitchable_eg']
+  if 'link_info' in config:
+    link_info = config['link_info']
 
 if __name__ == '__main__':
   parser = ArgumentParser()
