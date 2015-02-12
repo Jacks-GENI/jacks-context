@@ -20,6 +20,9 @@ advanced_types = []
 advanced_hardware = []
 advanced_images = []
 advanced_link_types = []
+nomac_images = {}
+stitchable_ig = []
+stitchable_eg = []
 
 context = config.buildContext()
 
@@ -180,6 +183,31 @@ def calculate_type_hardware(is_basic, ads):
 
 def calculate_type_link(is_basic, ads):
   result = []
+  add_stitchable_constraints(stitchable_ig, 'vlan', result)
+  add_stitchable_constraints(stitchable_eg, '!', result)
+  return result
+
+def add_stitchable_constraints(list, linkType, result):
+  for urn in list:
+    others = find_not(list, urn)
+    if len(others) > 0:
+      result.append({
+        'node': {
+          'aggregates': [urn]
+        },
+        'link': {
+          'linkTypes': [linkType]
+        },
+        'node2': {
+          'aggregates': others
+        }
+      })
+
+def find_not(list, without):
+  result = []
+  for item in list:
+    if item != without:
+      result.append(item)
   return result
 
 ##########################################################################
@@ -228,8 +256,11 @@ def calculate_images(is_basic, ads):
             description = image.description
             if description is None:
               description = imageId
-            result.append({ 'id': imageId,
-                            'name': description })
+            imageResult = { 'id': imageId,
+                            'name': description }
+            if imageId in nomac_images:
+              imageResult['nomac'] = True
+            result.append(imageResult)
             found[imageId] = 1
   return result
 
@@ -348,7 +379,7 @@ def do_parallel (is_basic=True, sites=[], output=None):
   sys.stderr.write("Processing complete\n")
 
 def parse_config(file, is_basic):
-  global advanced_types, advanced_hardware, advanced_images, advanced_link_types, extra
+  global advanced_types, advanced_hardware, advanced_images, advanced_link_types, extra, nomac_images, stitchable_ig, stitchable_eg
   f = open(file, 'r')
   jsonText = f.read()
   f.close()
@@ -364,6 +395,12 @@ def parse_config(file, is_basic):
       advanced_link_types = config['advanced']['linkTypes']
   if 'extra' in config:
     extra = config['extra']
+  if 'nomac_images' in config:
+    nomac_images = config['nomac_images']
+  if 'stitchable_ig' in config:
+    stitchable_ig = config['stitchable_ig']
+  if 'stitchable_eg' in config:
+    stitchable_eg = config['stitchable_eg']
 
 if __name__ == '__main__':
   parser = ArgumentParser()

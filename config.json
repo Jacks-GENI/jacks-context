@@ -51,11 +51,13 @@
       },
       {
         "id": "gre-tunnel",
-        "name": "GRE Tunnel"
+        "name": "GRE Tunnel",
+	"ip": "auto"
       },
       {
         "id": "egre-tunnel",
-        "name": "EGRE Tunnel"
+        "name": "EGRE Tunnel",
+	"ip": "auto"
       }
     ],
     "constraints": [
@@ -118,5 +120,16 @@
     "urn:publicid:IDN+cisco.geniracks.net+authority+cm": "Utah Cisco",
     "urn:publicid:IDN+utahddc.geniracks.net+authority+cm": "Utah DDC",
     "urn:publicid:IDN+instageni.wisc.edu+authority+cm": "Wisconsin"
-  }
+  },
+  "nomac_images": {
+    "urn:publicid:IDN+emulab.net+image+emulab-ops:Ubuntu12-64-OVS": true
+  },
+  "stitchable_ig": [
+    "urn:publicid:IDN+utahddc.geniracks.net+authority+cm",
+    "urn:publicid:IDN+instageni.nysernet.org+authority+cm",
+  ],
+  "stitchable_eg": [
+    "urn:publicid:IDN+exogeni.net:fiuvmsite+authority+am",
+    "urn:publicid:IDN+exogeni.net:uflvmsite+authority+am",
+  ]
 }
