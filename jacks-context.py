@@ -13,6 +13,8 @@ import geni.aggregate.instageni as IG
 import geni.aggregate.exogeni as EXO
 import geni.aggregate.opengeni as OG
 import geni.aggregate.protogeni as PG
+import geni.aggregate.cloudlab as CL
+import geni.aggregate.apt as APT
 from geni.rspec.pgad import Advertisement
 
 extra = {}
@@ -356,23 +358,22 @@ def get_advertisement (context, site, pipe):
   pipe.close()
 
 def do_parallel (is_basic=True, sites=[], output=None):
-  igmapping = IG.name_to_aggregate()
-  exomapping = EXO.name_to_aggregate()
-  ogmapping = OG.name_to_aggregate()
-  pgmapping = PG.name_to_aggregate()
+  aggmapping = dict()
+  # Note later updates will override earlier entries if they have the
+  # same key.
+  aggmapping.update(APT.name_to_aggregate())
+  aggmapping.update(CL.name_to_aggregate())
+  aggmapping.update(PG.name_to_aggregate())
+  aggmapping.update(OG.name_to_aggregate())
+  aggmapping.update(EXO.name_to_aggregate())
+  aggmapping.update(IG.name_to_aggregate())
   children = []
   pipes = []
   ads = []
   for site_name in sites:
     site = None
-    if site_name in igmapping:
-      site = igmapping[site_name]
-    elif site_name in exomapping:
-      site = exomapping[site_name]
-    elif site_name in ogmapping:
-      site = ogmapping[site_name]
-    elif site_name in pgmapping:
-      site = pgmapping[site_name]
+    if site_name in aggmapping:
+      site = aggmapping[site_name]
     if site:
       pipe_parent, pipe_child = MP.Pipe(False)
       pipes.append(pipe_parent)
