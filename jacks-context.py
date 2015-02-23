@@ -22,7 +22,7 @@ advanced_types = []
 advanced_hardware = []
 advanced_images = []
 advanced_link_types = []
-aggregates {
+aggregates = {
   'names': {},
   'types': {}
 }
@@ -105,7 +105,7 @@ def get_image_id(image, cmurn):
   #if imageId is None:
   #  imageId = image.name
   imageId = image.name
-  if cmurn in aggregates['types'] and aggregate['types'][cmurn] == 'ig':
+  if cmurn in aggregates['types'] and aggregates['types'][cmurn] == 'ig':
     urn = imageId
     baseId = urn.split('+')[-1]
     imageId = 'urn:publicid:IDN+emulab.net+image+' + baseId
@@ -122,7 +122,8 @@ def calculate_type_image(is_basic, ads):
       pair.newNode()
       slivernames = []
       for name in node.sliver_types:
-        pair.addPair(name, '!')
+        if not name in advanced_types:
+          pair.addPair(name, '!')
       for sliver_name, images in node.images.iteritems():
         for image in images:
           imageId = get_image_id(image, cmurn)
@@ -150,11 +151,13 @@ def calculate_type_hardware(is_basic, ads):
       
       slivernames = []
       for name in node.sliver_types:
-        pair.addPair(name, '!')
+        if not name in advanced_types:
+          pair.addPair(name, '!')
 
       hardwarenames = []
       for name, slots in node.hardware_types.iteritems():
-        pair.addPair('!', name)
+        if not name in advanced_hardware:
+          pair.addPair('!', name)
 
       for hardware_name, slots in node.hardware_types.iteritems():
         for sliver_name in node.sliver_types:
@@ -204,7 +207,7 @@ def add_stitchable_constraints(list, linkType, result):
           'aggregates': [urn]
         },
         'link': {
-          'linkTypes': [linkType]
+          'linkTypes': linkType
         },
         'node2': {
           'aggregates': others
@@ -329,6 +332,8 @@ def calculate_context(is_basic, ads):
   aggregateNames = []
   canvas = calculate_canvas(is_basic, ads, aggregateNames)
   constraints = calculate_constraints(is_basic, ads, aggregateNames)
+  if 'constraints' in extra:
+    constraints.extend(extra['constraints'])
   return {'canvasOptions': canvas,
           'constraints': constraints }
 
