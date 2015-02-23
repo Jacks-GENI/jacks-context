@@ -22,6 +22,10 @@ advanced_types = []
 advanced_hardware = []
 advanced_images = []
 advanced_link_types = []
+aggregates {
+  'names': {},
+  'types': {}
+}
 nomac_images = {}
 stitchable_ig = []
 stitchable_eg = []
@@ -96,13 +100,15 @@ def calculate_constraints(is_basic, ads, aggregateNames):
   result.extend(calculate_type_link(is_basic, ads, aggregateNames))
   return result
 
-def get_image_id(image):
+def get_image_id(image, cmurn):
   #imageId = image.url
   #if imageId is None:
   #  imageId = image.name
-  urn = image.name
-  id = urn.split('+')[-1]
-  imageId = 'urn:publicid:IDN+emulab.net+image+' + id
+  imageId = image.name
+  if cmurn in aggregates['types'] and aggregate['types'][cmurn] == 'ig':
+    urn = imageId
+    baseId = urn.split('+')[-1]
+    imageId = 'urn:publicid:IDN+emulab.net+image+' + baseId
   return imageId
 
 
@@ -116,18 +122,10 @@ def calculate_type_image(is_basic, ads):
       pair.newNode()
       slivernames = []
       for name in node.sliver_types:
-        slivernames.append(name)
-      if len(slivernames) > 0:
-        result.append({
-          'node': {
-            'types': slivernames,
-            'images': ['!'],
-            'aggregates': [cmurn]
-          }
-        })
+        pair.addPair(name, '!')
       for sliver_name, images in node.images.iteritems():
         for image in images:
-          imageId = get_image_id(image)
+          imageId = get_image_id(image, cmurn)
           if not is_basic or (not sliver_name in advanced_types and
                               not imageId in advanced_images):
             pair.addPair(sliver_name, imageId)
@@ -152,27 +150,11 @@ def calculate_type_hardware(is_basic, ads):
       
       slivernames = []
       for name in node.sliver_types:
-        slivernames.append(name)
-      if len(slivernames) > 0:
-        result.append({
-          'node': {
-            'types': slivernames,
-            'hardware': ['!'],
-            'aggregates': [cmurn]
-          }
-        })
+        pair.addPair(name, '!')
 
       hardwarenames = []
       for name, slots in node.hardware_types.iteritems():
-        hardwarenames.append(name)
-      if len(hardwarenames) > 0:
-        result.append({
-          'node': {
-            'types': ['!'],
-            'hardware': hardwarenames,
-            'aggregates': [cmurn]
-          }
-        })
+        pair.addPair('!', name)
 
       for hardware_name, slots in node.hardware_types.iteritems():
         for sliver_name in node.sliver_types:
@@ -275,9 +257,10 @@ def calculate_images(is_basic, ads):
   result = []
   for ad in ads:
     for node in ad.nodes:
+      cmurn = node.component_manager_id
       for sliver_name, images in node.images.iteritems():
         for image in images:
-          imageId = get_image_id(image)
+          imageId = get_image_id(image, cmurn)
           if not imageId in found:
             description = image.description
             if description is None:
@@ -309,6 +292,8 @@ def calculate_aggregates(is_basic, ads, aggregateNames):
     for node in ad.nodes:
       urn = node.component_manager_id
       name = urn
+      if urn in aggregates['names']:
+        name = aggregates['names'][urn]
       pieces = urn.split('+')
       if len(pieces) >= 1:
         name = pieces[1]
@@ -408,7 +393,7 @@ def do_parallel (is_basic=True, sites=[], output=None):
   sys.stderr.write("Processing complete\n")
 
 def parse_config(file, is_basic):
-  global advanced_types, advanced_hardware, advanced_images, advanced_link_types, extra, nomac_images, stitchable_ig, stitchable_eg, link_info
+  global advanced_types, advanced_hardware, advanced_images, advanced_link_types, extra, nomac_images, stitchable_ig, stitchable_eg, link_info, aggregates
   f = open(file, 'r')
   jsonText = f.read()
   f.close()
@@ -422,6 +407,10 @@ def parse_config(file, is_basic):
       advanced_images = config['advanced']['images']
     if 'linkTypes' in config['advanced']:
       advanced_link_types = config['advanced']['linkTypes']
+  if 'aggregate_names' in config:
+    aggregates['names'] = config['aggregate_names']
+  if 'aggregate_types' in config:
+    aggregates['types'] = config['aggregate_types']
   if 'extra' in config:
     extra = config['extra']
   if 'nomac_images' in config:

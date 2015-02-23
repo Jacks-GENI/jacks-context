@@ -121,6 +121,31 @@
     "urn:publicid:IDN+utahddc.geniracks.net+authority+cm": "Utah DDC",
     "urn:publicid:IDN+instageni.wisc.edu+authority+cm": "Wisconsin"
   },
+  "aggregate_types": {
+    "urn:publicid:IDN+geni.case.edu+authority+cm": "ig",
+    "urn:publicid:IDN+geni.it.cornell.edu+authority+cm": "ig",
+    "urn:publicid:IDN+instageni.clemson.edu+authority+cm": "ig",
+    "urn:publicid:IDN+instageni.rnoc.gatech.edu+authority+cm": "ig",
+    "urn:publicid:IDN+instageni.illinois.edu+authority+cm": "ig",
+    "urn:publicid:IDN+instageni.ku.gpeni.net+authority+cm": "ig",
+    "urn:publicid:IDN+lan.sdn.uky.edu+authority+cm": "ig",
+    "urn:publicid:IDN+geni.kettering.edu+authority+cm": "ig",
+    "urn:publicid:IDN+instageni.lsu.edu+authority+cm": "ig",
+    "urn:publicid:IDN+instageni.rnet.missouri.edu+authority+cm": "ig",
+    "urn:publicid:IDN+instageni.iu.edu+authority+cm": "ig",
+    "urn:publicid:IDN+instageni.northwestern.edu+authority+cm": "ig",
+    "urn:publicid:IDN+instageni.nps.edu+authority+cm": "ig",
+    "urn:publicid:IDN+instageni.nysernet.org+authority+cm": "ig",
+    "urn:publicid:IDN+genirack.nyu.edu+authority+cm": "ig",
+    "urn:publicid:IDN+instageni.cs.princeton.edu+authority+cm": "ig",
+    "urn:publicid:IDN+instageni.sox.net+authority+cm": "ig",
+    "urn:publicid:IDN+instageni.stanford.edu+authority+cm": "ig",
+    "urn:publicid:IDN+instageni.idre.ucla.edu+authority+cm": "ig",
+    "urn:publicid:IDN+pks2.sdn.uky.edu+authority+cm": "ig",
+    "urn:publicid:IDN+cisco.geniracks.net+authority+cm": "ig",
+    "urn:publicid:IDN+utahddc.geniracks.net+authority+cm": "ig",
+    "urn:publicid:IDN+instageni.wisc.edu+authority+cm": "ig"
+  },
   "nomac_images": {
     "urn:publicid:IDN+emulab.net+image+emulab-ops:Ubuntu12-64-OVS": true
   },
