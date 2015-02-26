@@ -2,10 +2,11 @@
 
 # Generate a config file for the jacks-context generator.
 
+import argparse
+import datetime
 import json
 import sys
 import xmlrpclib
-from argparse import ArgumentParser
 from urlparse import urlparse
 
 
@@ -23,6 +24,7 @@ exogeni_raw_types = [
 
 DEFAULT_SR_URL = 'https://ch.geni.net:8444/SR'
 DEFAULT_IR_URL = 'http://geni.renci.org:15080/registry/'
+DEFAULT_IR_SINCE = '2014-01-01'
 
 
 SR_TYPE_AGGREGATE = 0
@@ -64,12 +66,18 @@ class Aggregate(object):
             return False
 
     def isStitchable(self):
-        print self.categories
         return 'ui_stitchable_cat' in self.categories
 
+def parse_ir_date(string):
+    format = '%Y-%m-%d'
+    try:
+        return datetime.datetime.strptime(string, format)
+    except:
+        msg = 'Invalid date, use format YYYY-MM-DD'
+        raise argparse.ArgumentTypeError(msg)
 
 def parseArgs(argv):
-  parser = ArgumentParser()
+  parser = argparse.ArgumentParser()
   parser.add_argument('-i', '--input',
                       help='jacks config file template (json)')
   parser.add_argument('-o', '--output',
@@ -80,6 +88,10 @@ def parseArgs(argv):
   parser.add_argument('--ir-url',
                       default=DEFAULT_IR_URL,
                       help='ExoGENI Image Registry URL')
+  parser.add_argument('--ir-since',
+                      type=parse_ir_date,
+                      default=DEFAULT_IR_SINCE,
+                      help='Use ExoGENI Image newer than YYYY-MM-DD')
   args = parser.parse_args(argv)
   return args
 
@@ -137,6 +149,45 @@ def insert_agg_data(config, aggs):
     config['stitchable_ig'] = [a.urn for a in ig_stitchable]
     config['stitchable_og'] = [a.urn for a in og_stitchable]
 
+#----------------------------------------------------------------------
+# Advertise images in the ExoGENI image registry
+#----------------------------------------------------------------------
+def parse_image_date(s):
+    format = '%Y-%m-%d %H:%M:%S.%f'
+    return datetime.datetime.strptime(s, format)
+
+def parse_image_default(s):
+    return s.lower() == 'true'
+
+def add_exogeni_images(config, ir_url, ir_since):
+    proxy=xmlrpclib.ServerProxy(ir_url)
+    #proxy.registryService.getDefaultImage()
+    all_images = proxy.registryService.getAllImages()
+    exo_images = []
+    for image in all_images:
+        name = image['ImageName']
+        url = image['ImageURL']
+        csum = image['ImageHash']
+        date = parse_image_date(image['ImageDate'])
+        default = parse_image_default(image['ImageDefault'])
+        if default or date >= ir_since:
+            exo_images.append(dict(name=name, id=url, version=csum))
+    # Write the ExoGENI images to the config.
+    #
+    # NOTE: this will overwrite existing images. I presume this is ok
+    # since ExoGENI is the only AM type that does not advertise
+    # images.
+    config['extra']['images'] = exo_images
+
+    # Add a constraint associating all ExoGENI images with the
+    # appropriate VM types.
+    image_urls = [i['id'] for i in exo_images]
+    extra_constraints = config['extra']['constraints']
+    extra_constraints.append(dict(node=dict(aggregates='*',
+                                            images=image_urls,
+                                            types=exogeni_vm_types)))
+    config['extra']['constraints'] = extra_constraints
+
 def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
@@ -145,38 +196,10 @@ def main(argv=None):
         jacksConfig = json.load(f)
     all_aggs = get_aggregates(args.sr_url)
     insert_agg_data(jacksConfig, all_aggs)
+    add_exogeni_images(jacksConfig, args.ir_url, args.ir_since)
     with open(args.output, 'w') as f:
         json.dump(jacksConfig, f, indent=2, sort_keys=True)
     return 0
 
 if __name__ == '__main__':
     exit(main())
-
-
-
-# Get all the aggregates from the service registry
-
-
-
-# Generate the "aggregate_names" dictionary. This goes at the top
-# level in the jacks-context config file.
-aggregate_names = dict()
-for a in all_aggs:
-    aggregate_names[a.urn] = a.name
-
-for urn in aggregate_names:
-    print '"%s": "%s"' % (urn, aggregate_names[urn])
-
-#----------------------------------------------------------------------
-# Advertise all images in the ExoGENI image registry
-#----------------------------------------------------------------------
-proxy=xmlrpclib.ServerProxy(DEFAULT_IR_URL)
-#proxy.registryService.getDefaultImage()
-all_images = proxy.registryService.getAllImages()
-exo_images = []
-for image in all_images:
-    name = image['ImageName']
-    url = image['ImageURL']
-    csum = image['ImageHash']
-    exo_images.append(dict(name=name, id=url, version=csum))
-
