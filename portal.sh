@@ -23,7 +23,6 @@ python jacks-context.py --basic \
                         eg-uh \
                         eg-wsu \
                         eg-wvn \
-                        exosm \
                         ig-chicago \
                         ig-clemson \
                         ig-cornell \

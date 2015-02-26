@@ -297,6 +297,12 @@
             }
         ],
         "images": "Leave this blank it is filled in by make-portal-config",
+        "types": [
+            {
+                "id": "ExoGENI-M4",
+                "name": "ExoGENI-M4"
+            }
+        ],
         "linkTypes": [
             {
                 "id": "lan",
@@ -350,6 +356,40 @@
 	        "node2": {
 	            "types": [ "*" ]
 	        }
+            },
+            {
+                "node": {
+                    "aggregates": [
+                        "urn:publicid:IDN+exogeni.net+authority+am"
+                    ],
+                    "hardware": [
+                        "!"
+                    ],
+                    "types": [
+                        "XOLarge",
+                        "XOMedium",
+                        "XOSmall",
+                        "XOXlarge",
+                        "ExoGENI-M4"
+                    ]
+                }
+            },
+            {
+                "node": {
+                    "aggregates": [
+                        "urn:publicid:IDN+exogeni.net+authority+am"
+                    ],
+                    "images": [
+                        "!"
+                    ],
+                    "types": [
+                        "XOLarge",
+                        "XOMedium",
+                        "XOSmall",
+                        "XOXlarge",
+                        "ExoGENI-M4"
+                    ]
+                }
             }
         ]
     },
