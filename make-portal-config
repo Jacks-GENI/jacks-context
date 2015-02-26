@@ -140,10 +140,11 @@ def insert_agg_data(config, aggs):
             if (a.isStitchable()):
                 og_stitchable.append(a)
 
-    config['aggregate_names'] = {a.urn: a.name for a in compute_aggs}
-    agg_types = {a.urn: 'eg' for a in eg_aggs}
-    agg_types.update({a.urn: 'ig' for a in ig_aggs})
-    agg_types.update({a.urn: 'og' for a in og_aggs})
+    # Would prefer dictionary comprehensions but we need 2.6 compatibility
+    config['aggregate_names'] = dict((a.urn, a.name) for a in compute_aggs)
+    agg_types = dict((a.urn, 'eg') for a in eg_aggs)
+    agg_types.update(dict((a.urn, 'ig') for a in ig_aggs))
+    agg_types.update(dict((a.urn, 'og') for a in og_aggs))
     config['aggregate_types'] = agg_types
     config['stitchable_eg'] = [a.urn for a in eg_stitchable]
     config['stitchable_ig'] = [a.urn for a in ig_stitchable]
