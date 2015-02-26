@@ -296,6 +296,23 @@
                 "id": "https://www.emulab.net/protogeni/jacks-stable/images/router.svg"
             }
         ],
+        "images": [
+            {
+                "name": "Ubuntu 14.04",
+                "id": "http://geni-images.renci.org/images/standard/ubuntu/ub1404-v1.0.3.xml",
+                "version": "2d553fdbca830020d7cf13011399d7210dcefe96"
+            },
+            {
+                "name": "GIMI",
+                "id": "http://emmy9.casa.umass.edu/Disk_Images/ExoGENI/exogeni-umass-1.2.xml",
+                "version": "49f0c193cc91d7b2fc1a6f038427935f4c296a8a"
+            },
+            {
+                "name": "Ubuntu 12.04",
+                "id": "http://emmy9.casa.umass.edu/Disk_Images/ExoGENI/Ubuntu12.04-1.0.2/ubuntu12.04-1.0.2.xml",
+                "version": "8ee8735fa6a4f102313f7a29f6fd0918b8ed5fc4"
+            }
+        ],
         "linkTypes": [
             {
                 "id": "lan",
