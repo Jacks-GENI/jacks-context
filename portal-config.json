@@ -366,6 +366,22 @@
 	        "node2": {
 	            "types": [ "*" ]
 	        }
+            },
+            {
+                "node": {
+                    "aggregates": [ "*" ],
+                    "images": [
+                        "http://geni-images.renci.org/images/standard/ubuntu/ub1404-v1.0.3.xml",
+                        "http://emmy9.casa.umass.edu/Disk_Images/ExoGENI/exogeni-umass-1.2.xml",
+                        "http://emmy9.casa.umass.edu/Disk_Images/ExoGENI/Ubuntu12.04-1.0.2/ubuntu12.04-1.0.2.xml"
+                    ],
+                    "types": [
+                        "XOLarge",
+                        "XOMedium",
+                        "XOSmall",
+                        "XOXlarge",
+                    ]
+                }
             }
         ]
     },
