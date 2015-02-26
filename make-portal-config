@@ -1,0 +1,182 @@
+#!/usr/bin/env python
+
+# Generate a config file for the jacks-context generator.
+
+import json
+import sys
+import xmlrpclib
+from argparse import ArgumentParser
+from urlparse import urlparse
+
+
+exogeni_vm_types = [
+    "XOLarge",
+    "XOMedium",
+    "XOSmall",
+    "XOXlarge",
+]
+
+exogeni_raw_types = [
+    "ExoGENI-M4"
+]
+
+
+DEFAULT_SR_URL = 'https://ch.geni.net:8444/SR'
+DEFAULT_IR_URL = 'http://geni.renci.org:15080/registry/'
+
+
+SR_TYPE_AGGREGATE = 0
+SR_ATTRIBUTES = '_GENI_SERVICE_ATTRIBUTES'
+
+
+class ChapiResponse(object):
+    def __init__(self, response):
+        self.code = response['code']
+        self.value = response['value']
+        self.output = response['output']
+
+
+class Aggregate(object):
+    def __init__(self, sr_record):
+        self.url = sr_record['SERVICE_URL']
+        self.amtype = sr_record[SR_ATTRIBUTES]['UI_AM_TYPE']
+        self.categories = sr_record[SR_ATTRIBUTES]['UI_AM_CAT'].split()
+        self.name = sr_record['SERVICE_NAME']
+        self.urn = sr_record['SERVICE_URN']
+
+    def isExoGENI(self):
+        return self.amtype == 'ui_exogeni_am'
+
+    def isInstaGENI(self):
+        if self.amtype == 'ui_instageni_am':
+            return True
+        elif self.amtype == 'ui_other_am':
+            url = urlparse(self.url)
+            return url.port == 12369
+        else:
+            return False
+
+    def isOpenGENI(self):
+        if self.amtype == 'ui_other_am':
+            url = urlparse(self.url)
+            return url.port == 5002
+        else:
+            return False
+
+    def isStitchable(self):
+        print self.categories
+        return 'ui_stitchable_cat' in self.categories
+
+
+def parseArgs(argv):
+  parser = ArgumentParser()
+  parser.add_argument('-i', '--input',
+                      help='jacks config file template (json)')
+  parser.add_argument('-o', '--output',
+                      help='location for resulting jacks json config file')
+  parser.add_argument('--sr-url',
+                      default=DEFAULT_SR_URL,
+                      help='Service Registry URL')
+  parser.add_argument('--ir-url',
+                      default=DEFAULT_IR_URL,
+                      help='ExoGENI Image Registry URL')
+  args = parser.parse_args(argv)
+  return args
+
+def get_aggregates(sr_url):
+    """Return a list of Aggregate instances retrieved from the service
+    registry.
+    """
+    # There's a bug that will be fixed on 04-Mar-2015 that will allow us
+    # to use get_services_of_type
+    # aggs = sr_proxy.get_services_of_type(SR_TYPE_AGGREGATE)
+    sr_proxy = xmlrpclib.ServerProxy(sr_url)
+    result = ChapiResponse(sr_proxy.get_services())
+    if result.code != 0:
+        raise Exception('SR Error: %s' % (result.output))
+    aggs = [Aggregate(s) for s in result.value if s['SERVICE_TYPE'] == 0]
+    return aggs
+
+def insert_agg_data(config, aggs):
+    """Loop once through the aggregates putting each into its appropriate
+    buckets by type and stitchable and compute.
+
+    """
+    eg_aggs = list()
+    eg_stitchable = list()
+    ig_aggs = list()
+    ig_stitchable = list()
+    og_aggs = list()
+    og_stitchable = list()
+    compute_aggs = list()
+
+    for a in aggs:
+        # print a.amtype, ' => ', a.url
+        if a.isExoGENI():
+            compute_aggs.append(a)
+            eg_aggs.append(a)
+            if (a.isStitchable()):
+                eg_stitchable.append(a)
+        elif a.isInstaGENI():
+            compute_aggs.append(a)
+            ig_aggs.append(a)
+            if (a.isStitchable()):
+                ig_stitchable.append(a)
+        elif a.isOpenGENI():
+            compute_aggs.append(a)
+            og_aggs.append(a)
+            if (a.isStitchable()):
+                og_stitchable.append(a)
+
+    config['aggregate_names'] = {a.urn: a.name for a in compute_aggs}
+    agg_types = {a.urn: 'eg' for a in eg_aggs}
+    agg_types.update({a.urn: 'ig' for a in ig_aggs})
+    agg_types.update({a.urn: 'og' for a in og_aggs})
+    config['aggregate_types'] = agg_types
+    config['stitchable_eg'] = [a.urn for a in eg_stitchable]
+    config['stitchable_ig'] = [a.urn for a in ig_stitchable]
+    config['stitchable_og'] = [a.urn for a in og_stitchable]
+
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv[1:]
+    args = parseArgs(argv)
+    with open(args.input, 'r') as f:
+        jacksConfig = json.load(f)
+    all_aggs = get_aggregates(args.sr_url)
+    insert_agg_data(jacksConfig, all_aggs)
+    with open(args.output, 'w') as f:
+        json.dump(jacksConfig, f, indent=2, sort_keys=True)
+    return 0
+
+if __name__ == '__main__':
+    exit(main())
+
+
+
+# Get all the aggregates from the service registry
+
+
+
+# Generate the "aggregate_names" dictionary. This goes at the top
+# level in the jacks-context config file.
+aggregate_names = dict()
+for a in all_aggs:
+    aggregate_names[a.urn] = a.name
+
+for urn in aggregate_names:
+    print '"%s": "%s"' % (urn, aggregate_names[urn])
+
+#----------------------------------------------------------------------
+# Advertise all images in the ExoGENI image registry
+#----------------------------------------------------------------------
+proxy=xmlrpclib.ServerProxy(DEFAULT_IR_URL)
+#proxy.registryService.getDefaultImage()
+all_images = proxy.registryService.getAllImages()
+exo_images = []
+for image in all_images:
+    name = image['ImageName']
+    url = image['ImageURL']
+    csum = image['ImageHash']
+    exo_images.append(dict(name=name, id=url, version=csum))
+
