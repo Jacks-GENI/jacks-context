@@ -246,22 +246,40 @@
     "extra": {
         "defaults": [
             {
-                "name": "Xen VM",
-                "type": "emulab-xen",
-                "image": "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU14-64-STD",
-                "icon": "https://www.emulab.net/protogeni/jacks-stable/images/server.svg"
+	        "name": "VM",
+		"type": "default-vm",
+		"icon": "https://portal.geni.net/images/VM-noTxt-centered.svg"
             },
             {
-                "name": "Raw PC",
-                "type": "raw-pc",
-                "image": "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU14-64-STD",
-                "icon": "https://www.emulab.net/protogeni/jacks-stable/images/default.svg"
+	        "name": "Xen VM",
+		"type": "emulab-xen",
+		"image": "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU12-64-STD",
+		"icon": "https://portal.geni.net/images/Xen-VM.svg"
             },
             {
-	        "name": "OVS Router",
-	        "type": "emulab-xen",
-	        "image": "urn:publicid:IDN+emulab.net+image+emulab-ops:Ubuntu12-64-OVS",
-                "icon": "https://www.emulab.net/protogeni/jacks-stable/images/router.svg"
+	        "name": "EG VM",
+		"type": "XOSmall",
+		"hardware": "orca-vm-cloud",
+		"icon": "https://portal.geni.net/images/EG-VM-noTxt-centered.svg"
+            },
+            {
+	        "name": "Raw PC IG",
+		"type": "emulab-rawpc",
+		"image": "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU12-64-STD",
+		"hardware": "pc",
+		"icon": "https://portal.geni.net/images/RawPC-IG.svg"
+            },
+            {
+	        "name": "Raw PC EG",
+		"type": "ExoGENI-M4",
+		"hardware": "orca-xcat-cloud",
+		"icon": "https://portal.geni.net/images/RawPC-EG.svg"
+            },
+            {
+	        "name": "OF OVS",
+		"type": "emulab-xen",
+		"image": "urn:publicid:IDN+emulab.net+image+emulab-ops:Ubuntu12-64-OVS",
+		"icon": "https://portal.geni.net/images/router.svg"
             }
         ],
         "icons": [
