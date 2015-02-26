@@ -282,6 +282,10 @@ def calculate_images(is_basic, ads):
             description = image.description
             if description is None:
               description = imageId
+            # OpenGENI describes things as 'standard' and 'custom'
+            # so change them to the image id, which is a name
+            if description in ['standard', 'custom']:
+              description = imageId
             imageResult = { 'id': imageId,
                             'name': description }
             if imageId in nomac_images:
