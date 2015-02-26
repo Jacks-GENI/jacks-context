@@ -296,7 +296,7 @@
                 "id": "https://www.emulab.net/protogeni/jacks-stable/images/router.svg"
             }
         ],
-        "images": "Leave this blank it is filled in by make-portal-config"
+        "images": "Leave this blank it is filled in by make-portal-config",
         "linkTypes": [
             {
                 "id": "lan",
