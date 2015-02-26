@@ -7,6 +7,7 @@ from argparse import ArgumentParser
 import time
 import json
 import sys
+import os
 
 import config
 import geni.aggregate.instageni as IG
@@ -351,17 +352,22 @@ def calculate_context(is_basic, ads):
   return {'canvasOptions': canvas,
           'constraints': constraints }
 
-def get_advertisement (context, site, pipe):
+def get_advertisement (context, site, pipe, rspec_dir=None):
   try:
     ad = site.listresources(context)
     pipe.send([ad.text])
     sys.stderr.write("[%s] Fetched Advertisement\n" % (site.name))
+    if rspec_dir:
+      rspec_path = os.path.join(rspec_dir, site.name)
+      with open(rspec_path, 'w') as f:
+        f.write(ad.text)
+      sys.stderr.write("[%s] Wrote rspec to %s\n" % (site.name, rspec_path))
   except Exception, e:
     pipe.send([])
     sys.stderr.write("[%s] OFFLINE\n" % (site.name))
   pipe.close()
 
-def do_parallel (is_basic=True, sites=[], output=None):
+def do_parallel (is_basic=True, sites=[], output=None, rspec_dir=None):
   aggmapping = dict()
   # Note later updates will override earlier entries if they have the
   # same key.
@@ -382,7 +388,7 @@ def do_parallel (is_basic=True, sites=[], output=None):
       pipe_parent, pipe_child = MP.Pipe(False)
       pipes.append(pipe_parent)
       p = MP.Process(target=get_advertisement,
-                     args=(context, site, pipe_child))
+                     args=(context, site, pipe_child, rspec_dir))
       p.start()
       children.append(p)
   for i in xrange(len(children)):
@@ -450,10 +456,13 @@ if __name__ == '__main__':
   parser.add_argument('--basic', dest='basic', default=False, const=True,
                       action='store_const',
                       help='Hide advanced options')
+  parser.add_argument('--rspecdir', dest='rspecdir', default=None,
+                      help='Directory for rspecs for debugging')
   parser.add_argument('site', nargs='+',
                       help='InstaGENI Site names ex: ig-utah')
   args = parser.parse_args()
 
   if args.config:
     parse_config(args.config, args.basic)
-  do_parallel(is_basic=args.basic, sites=args.site, output=args.output)
+  do_parallel(is_basic=args.basic, sites=args.site, output=args.output,
+              rspec_dir=args.rspecdir)
