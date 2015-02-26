@@ -436,7 +436,8 @@
         "urn:publicid:IDN+instageni.wisc.edu+authority+cm": "ig"
     },
     "nomac_images": {
-        "urn:publicid:IDN+emulab.net+image+emulab-ops:Ubuntu12-64-OVS": true
+        "urn:publicid:IDN+emulab.net+image+emulab-ops:Ubuntu12-64-OVS": true,
+        "urn:publicid:IDN+emulab.net+image+ubuntu-14.04-OVS": true
     },
     "link_info": {
         "local": ["lan"],
