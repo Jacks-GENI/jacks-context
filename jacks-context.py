@@ -113,12 +113,16 @@ def get_image_id(image, cmurn):
 
 
 def calculate_type_image(is_basic, ads):
-  cmurn = ''
+  pairMap = {}
   result = []
   for ad in ads:
-    pair = ConstraintPair()
     for node in ad.nodes:
       cmurn = node.component_manager_id
+      if cmurn in pairMap:
+        pair = pairMap[cmurn]
+      else:
+        pair = ConstraintPair()
+        pairMap[cmurn] = pair
       pair.newNode()
       slivernames = []
       for name in node.sliver_types:
@@ -130,6 +134,7 @@ def calculate_type_image(is_basic, ads):
           if not is_basic or (not sliver_name in advanced_types and
                               not imageId in advanced_images):
             pair.addPair(sliver_name, imageId)
+  for cmurn, pair in pairMap.iteritems():
     for sliver_name, image_name in pair.getPairs(is_basic):
       result.append({
         'node': {
@@ -141,12 +146,16 @@ def calculate_type_image(is_basic, ads):
   return result
 
 def calculate_type_hardware(is_basic, ads):
-  cmurn = ''
+  pairMap = {}
   result = []
   for ad in ads:
-    pair = ConstraintPair()
     for node in ad.nodes:
       cmurn = node.component_manager_id
+      if cmurn in pairMap:
+        pair = pairMap[cmurn]
+      else:
+        pair = ConstraintPair()
+        pairMap[cmurn] = pair
       pair.newNode()
       
       slivernames = []
@@ -164,6 +173,7 @@ def calculate_type_hardware(is_basic, ads):
           if not is_basic or (not sliver_name in advanced_types and
                               not hardware_name in advanced_hardware):
             pair.addPair(sliver_name, hardware_name)
+  for cmurn, pair in pairMap.iteritems():
     for sliver_name, hardware_name in pair.getPairs(is_basic):
       result.append({
         'node': {
@@ -263,7 +273,11 @@ def calculate_images(is_basic, ads):
       cmurn = node.component_manager_id
       for sliver_name, images in node.images.iteritems():
         for image in images:
+          if cmurn == 'urn:publicid:IDN+clemson-clemson-control-1.clemson.edu+authority+am':
+            print image
           imageId = get_image_id(image, cmurn)
+          #if imageId == 'centos-6.5':
+          #  print cmurn, image
           if not imageId in found:
             description = image.description
             if description is None:
