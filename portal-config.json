@@ -1,166 +1,166 @@
 {
-  "advanced": {
-    "hardware": ["switch", "lan", "delay-dl360", "pcvm", "dl360-vm", "delay",
-		 "dl360-G7", "interconnect-vm", "interconnect", "ipv4"],
-    "linkTypes": ["ethernet-procurve2", "ethernet-100000", "ethernet-1000000",
-		   "ethernet-bce", "ethernet-generic_1G"]
-  },
-  "extra": {
-    "defaults": [
-      {
-        "name": "Xen VM",
-        "type": "emulab-xen",
-        "image": "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU14-64-STD",
-        "icon": "https://www.emulab.net/protogeni/jacks-stable/images/server.svg"
-      },
-      {
-        "name": "Raw PC",
-        "type": "raw-pc",
-        "image": "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU14-64-STD",
-        "icon": "https://www.emulab.net/protogeni/jacks-stable/images/default.svg"
-      },
-      {
-	"name": "OVS Router",
-	"type": "emulab-xen",
-	"image": "urn:publicid:IDN+emulab.net+image+emulab-ops:Ubuntu12-64-OVS",
-        "icon": "https://www.emulab.net/protogeni/jacks-stable/images/router.svg"
-      }
+    "advanced": {
+        "hardware": ["switch", "lan", "delay-dl360", "pcvm", "dl360-vm", "delay",
+		     "dl360-G7", "interconnect-vm", "interconnect", "ipv4"],
+        "linkTypes": ["ethernet-procurve2", "ethernet-100000", "ethernet-1000000",
+		      "ethernet-bce", "ethernet-generic_1G"]
+    },
+    "extra": {
+        "defaults": [
+            {
+                "name": "Xen VM",
+                "type": "emulab-xen",
+                "image": "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU14-64-STD",
+                "icon": "https://www.emulab.net/protogeni/jacks-stable/images/server.svg"
+            },
+            {
+                "name": "Raw PC",
+                "type": "raw-pc",
+                "image": "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU14-64-STD",
+                "icon": "https://www.emulab.net/protogeni/jacks-stable/images/default.svg"
+            },
+            {
+	        "name": "OVS Router",
+	        "type": "emulab-xen",
+	        "image": "urn:publicid:IDN+emulab.net+image+emulab-ops:Ubuntu12-64-OVS",
+                "icon": "https://www.emulab.net/protogeni/jacks-stable/images/router.svg"
+            }
+        ],
+        "icons": [
+            {
+                "name": "Node",
+                "id": "https://www.emulab.net/protogeni/jacks-stable/images/default.svg"
+            },
+            {
+                "name": "Server",
+                "id": "https://www.emulab.net/protogeni/jacks-stable/images/server.svg"
+            },
+            {
+                "name": "Router",
+                "id": "https://www.emulab.net/protogeni/jacks-stable/images/router.svg"
+            }
+        ],
+        "linkTypes": [
+            {
+                "id": "lan",
+                "name": "Ethernet"
+            },
+            {
+                "id": "vlan",
+                "name": "Stitched Ethernet"
+            },
+            {
+                "id": "gre-tunnel",
+                "name": "GRE Tunnel",
+	        "ip": "auto"
+            },
+            {
+                "id": "egre-tunnel",
+                "name": "EGRE Tunnel",
+	        "ip": "auto"
+            }
+        ],
+        "constraints": [
+            {
+	        "node": {
+	            "types": [ "emulab-openvz", "raw-pc" ]
+	        },
+	        "link": {
+	            "linkTypes": [ "gre-tunnel" ]
+	        },
+	        "node2": {
+	            "types": [ "emulab-openvz", "raw-pc" ]
+	        }
+            },
+            {
+	        "node": {
+	            "types": [ "emulab-xen" ]
+	        },
+	        "link": {
+	            "linkTypes": [ "egre-tunnel" ]
+	        },
+	        "node2": {
+	            "types": [ "emulab-xen" ]
+	        }
+            },
+            {
+	        "node": {
+	            "types": [ "*" ]
+	        },
+	        "link": {
+	            "linkTypes": [ "lan", "vlan" ]
+	        },
+	        "node2": {
+	            "types": [ "*" ]
+	        }
+            }
+        ]
+    },
+    "aggregate_names": {
+        "urn:publicid:IDN+geni.case.edu+authority+cm": "Case Western",
+        "urn:publicid:IDN+geni.it.cornell.edu+authority+cm": "Cornell",
+        "urn:publicid:IDN+instageni.clemson.edu+authority+cm": "Clemson",
+        "urn:publicid:IDN+instageni.rnoc.gatech.edu+authority+cm": "Georgia Tech",
+        "urn:publicid:IDN+instageni.illinois.edu+authority+cm": "Illinois",
+        "urn:publicid:IDN+instageni.ku.gpeni.net+authority+cm": "Kansas",
+        "urn:publicid:IDN+lan.sdn.uky.edu+authority+cm": "Kentucky",
+        "urn:publicid:IDN+geni.kettering.edu+authority+cm": "Kettering",
+        "urn:publicid:IDN+instageni.lsu.edu+authority+cm": "LSU",
+        "urn:publicid:IDN+instageni.rnet.missouri.edu+authority+cm": "Missouri",
+        "urn:publicid:IDN+instageni.iu.edu+authority+cm": "Indiana",
+        "urn:publicid:IDN+instageni.northwestern.edu+authority+cm": "Northwestern",
+        "urn:publicid:IDN+instageni.nps.edu+authority+cm": "NPS",
+        "urn:publicid:IDN+instageni.nysernet.org+authority+cm": "NYSERNet",
+        "urn:publicid:IDN+genirack.nyu.edu+authority+cm": "NYU",
+        "urn:publicid:IDN+instageni.cs.princeton.edu+authority+cm": "Princeton",
+        "urn:publicid:IDN+instageni.sox.net+authority+cm": "SOX",
+        "urn:publicid:IDN+instageni.stanford.edu+authority+cm": "Stanford",
+        "urn:publicid:IDN+instageni.idre.ucla.edu+authority+cm": "UCLA",
+        "urn:publicid:IDN+pks2.sdn.uky.edu+authority+cm": "Kentucky II",
+        "urn:publicid:IDN+cisco.geniracks.net+authority+cm": "Utah Cisco",
+        "urn:publicid:IDN+utahddc.geniracks.net+authority+cm": "Utah DDC",
+        "urn:publicid:IDN+instageni.wisc.edu+authority+cm": "Wisconsin"
+    },
+    "aggregate_types": {
+        "urn:publicid:IDN+geni.case.edu+authority+cm": "ig",
+        "urn:publicid:IDN+geni.it.cornell.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.clemson.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.rnoc.gatech.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.illinois.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.ku.gpeni.net+authority+cm": "ig",
+        "urn:publicid:IDN+lan.sdn.uky.edu+authority+cm": "ig",
+        "urn:publicid:IDN+geni.kettering.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.lsu.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.rnet.missouri.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.iu.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.northwestern.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.nps.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.nysernet.org+authority+cm": "ig",
+        "urn:publicid:IDN+genirack.nyu.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.cs.princeton.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.sox.net+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.stanford.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.idre.ucla.edu+authority+cm": "ig",
+        "urn:publicid:IDN+pks2.sdn.uky.edu+authority+cm": "ig",
+        "urn:publicid:IDN+cisco.geniracks.net+authority+cm": "ig",
+        "urn:publicid:IDN+utahddc.geniracks.net+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.wisc.edu+authority+cm": "ig"
+    },
+    "nomac_images": {
+        "urn:publicid:IDN+emulab.net+image+emulab-ops:Ubuntu12-64-OVS": true
+    },
+    "link_info": {
+        "local": ["lan"],
+        "tunnel": ["gre-tunnel", "egre-tunnel"],
+        "stitch-ig": ["vlan"],
+        "stitch-eg": ["!"]
+    },
+    "stitchable_ig": [
+        "urn:publicid:IDN+utahddc.geniracks.net+authority+cm",
+        "urn:publicid:IDN+instageni.nysernet.org+authority+cm"
     ],
-    "icons": [
-      {
-        "name": "Node",
-        "id": "https://www.emulab.net/protogeni/jacks-stable/images/default.svg"
-      },
-      {
-        "name": "Server",
-        "id": "https://www.emulab.net/protogeni/jacks-stable/images/server.svg"
-      },
-      {
-        "name": "Router",
-        "id": "https://www.emulab.net/protogeni/jacks-stable/images/router.svg"
-      }
-    ],
-    "linkTypes": [
-      {
-        "id": "lan",
-        "name": "Ethernet"
-      },
-      {
-        "id": "vlan",
-        "name": "Stitched Ethernet"
-      },
-      {
-        "id": "gre-tunnel",
-        "name": "GRE Tunnel",
-	"ip": "auto"
-      },
-      {
-        "id": "egre-tunnel",
-        "name": "EGRE Tunnel",
-	"ip": "auto"
-      }
-    ],
-    "constraints": [
-      {
-	"node": {
-	  "types": [ "emulab-openvz", "raw-pc" ]
-	},
-	"link": {
-	  "linkTypes": [ "gre-tunnel" ]
-	},
-	"node2": {
-	  "types": [ "emulab-openvz", "raw-pc" ]
-	}
-      },
-      {
-	"node": {
-	  "types": [ "emulab-xen" ]
-	},
-	"link": {
-	  "linkTypes": [ "egre-tunnel" ]
-	},
-	"node2": {
-	  "types": [ "emulab-xen" ]
-	}
-      },
-      {
-	"node": {
-	  "types": [ "*" ]
-	},
-	"link": {
-	  "linkTypes": [ "lan", "vlan" ]
-	},
-	"node2": {
-	  "types": [ "*" ]
-	}
-      }
+    "stitchable_eg": [
+        "urn:publicid:IDN+exogeni.net:fiuvmsite+authority+am",
+        "urn:publicid:IDN+exogeni.net:uflvmsite+authority+am"
     ]
-  },
-  "aggregate_names": {
-    "urn:publicid:IDN+geni.case.edu+authority+cm": "Case Western",
-    "urn:publicid:IDN+geni.it.cornell.edu+authority+cm": "Cornell",
-    "urn:publicid:IDN+instageni.clemson.edu+authority+cm": "Clemson",
-    "urn:publicid:IDN+instageni.rnoc.gatech.edu+authority+cm": "Georgia Tech",
-    "urn:publicid:IDN+instageni.illinois.edu+authority+cm": "Illinois",
-    "urn:publicid:IDN+instageni.ku.gpeni.net+authority+cm": "Kansas",
-    "urn:publicid:IDN+lan.sdn.uky.edu+authority+cm": "Kentucky",
-    "urn:publicid:IDN+geni.kettering.edu+authority+cm": "Kettering",
-    "urn:publicid:IDN+instageni.lsu.edu+authority+cm": "LSU",
-    "urn:publicid:IDN+instageni.rnet.missouri.edu+authority+cm": "Missouri",
-    "urn:publicid:IDN+instageni.iu.edu+authority+cm": "Indiana",
-    "urn:publicid:IDN+instageni.northwestern.edu+authority+cm": "Northwestern",
-    "urn:publicid:IDN+instageni.nps.edu+authority+cm": "NPS",
-    "urn:publicid:IDN+instageni.nysernet.org+authority+cm": "NYSERNet",
-    "urn:publicid:IDN+genirack.nyu.edu+authority+cm": "NYU",
-    "urn:publicid:IDN+instageni.cs.princeton.edu+authority+cm": "Princeton",
-    "urn:publicid:IDN+instageni.sox.net+authority+cm": "SOX",
-    "urn:publicid:IDN+instageni.stanford.edu+authority+cm": "Stanford",
-    "urn:publicid:IDN+instageni.idre.ucla.edu+authority+cm": "UCLA",
-    "urn:publicid:IDN+pks2.sdn.uky.edu+authority+cm": "Kentucky II",
-    "urn:publicid:IDN+cisco.geniracks.net+authority+cm": "Utah Cisco",
-    "urn:publicid:IDN+utahddc.geniracks.net+authority+cm": "Utah DDC",
-    "urn:publicid:IDN+instageni.wisc.edu+authority+cm": "Wisconsin"
-  },
-  "aggregate_types": {
-    "urn:publicid:IDN+geni.case.edu+authority+cm": "ig",
-    "urn:publicid:IDN+geni.it.cornell.edu+authority+cm": "ig",
-    "urn:publicid:IDN+instageni.clemson.edu+authority+cm": "ig",
-    "urn:publicid:IDN+instageni.rnoc.gatech.edu+authority+cm": "ig",
-    "urn:publicid:IDN+instageni.illinois.edu+authority+cm": "ig",
-    "urn:publicid:IDN+instageni.ku.gpeni.net+authority+cm": "ig",
-    "urn:publicid:IDN+lan.sdn.uky.edu+authority+cm": "ig",
-    "urn:publicid:IDN+geni.kettering.edu+authority+cm": "ig",
-    "urn:publicid:IDN+instageni.lsu.edu+authority+cm": "ig",
-    "urn:publicid:IDN+instageni.rnet.missouri.edu+authority+cm": "ig",
-    "urn:publicid:IDN+instageni.iu.edu+authority+cm": "ig",
-    "urn:publicid:IDN+instageni.northwestern.edu+authority+cm": "ig",
-    "urn:publicid:IDN+instageni.nps.edu+authority+cm": "ig",
-    "urn:publicid:IDN+instageni.nysernet.org+authority+cm": "ig",
-    "urn:publicid:IDN+genirack.nyu.edu+authority+cm": "ig",
-    "urn:publicid:IDN+instageni.cs.princeton.edu+authority+cm": "ig",
-    "urn:publicid:IDN+instageni.sox.net+authority+cm": "ig",
-    "urn:publicid:IDN+instageni.stanford.edu+authority+cm": "ig",
-    "urn:publicid:IDN+instageni.idre.ucla.edu+authority+cm": "ig",
-    "urn:publicid:IDN+pks2.sdn.uky.edu+authority+cm": "ig",
-    "urn:publicid:IDN+cisco.geniracks.net+authority+cm": "ig",
-    "urn:publicid:IDN+utahddc.geniracks.net+authority+cm": "ig",
-    "urn:publicid:IDN+instageni.wisc.edu+authority+cm": "ig"
-  },
-  "nomac_images": {
-    "urn:publicid:IDN+emulab.net+image+emulab-ops:Ubuntu12-64-OVS": true
-  },
-  "link_info": {
-    "local": ["lan"],
-    "tunnel": ["gre-tunnel", "egre-tunnel"],
-    "stitch-ig": ["vlan"],
-    "stitch-eg": ["!"]
-  },
-  "stitchable_ig": [
-    "urn:publicid:IDN+utahddc.geniracks.net+authority+cm",
-    "urn:publicid:IDN+instageni.nysernet.org+authority+cm"
-  ],
-  "stitchable_eg": [
-    "urn:publicid:IDN+exogeni.net:fiuvmsite+authority+am",
-    "urn:publicid:IDN+exogeni.net:uflvmsite+authority+am"
-  ]
 }
