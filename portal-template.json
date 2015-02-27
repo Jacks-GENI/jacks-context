@@ -240,7 +240,8 @@
             "EucaC1XLarge",
             "EucaM1Large",
             "EucaM1Small",
-            "EucaM1XLarge"
+            "EucaM1XLarge",
+            "default-vm"
         ]
     },
     "extra": {
@@ -301,6 +302,10 @@
             {
                 "id": "ExoGENI-M4",
                 "name": "ExoGENI-M4"
+            },
+            {
+                "id": "default-vm",
+                "name": "default-vm"
             }
         ],
         "linkTypes": [
@@ -388,6 +393,32 @@
                         "XOSmall",
                         "XOXlarge",
                         "ExoGENI-M4"
+                    ]
+                }
+            },
+            {
+                "node": {
+                    "aggregates": [
+                        "*"
+                    ],
+                    "images": [
+                        "!"
+                    ],
+                    "types": [
+                        "default-vm"
+                    ]
+                }
+            },
+            {
+                "node": {
+                    "aggregates": [
+                        "*"
+                    ],
+                    "hardware": [
+                        "!"
+                    ],
+                    "types": [
+                        "default-vm"
                     ]
                 }
             }
