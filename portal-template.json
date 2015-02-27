@@ -1,0 +1,495 @@
+{
+    "advanced": {
+        "hardware": [
+            "80211",
+            "80211a",
+            "80211b",
+            "80211g",
+            "SWITCHPORT",
+            "bbg",
+            "bbgeni",
+            "bbgeni-vm",
+            "bbgenivm",
+            "c6220",
+            "c6220-vm",
+            "d2100",
+            "d2100-vm",
+            "d710-vm",
+            "d820",
+            "d820-vm",
+            "delay",
+            "delay-d710",
+            "delay-dl360",
+            "delay-pc1500",
+            "delay-pc2000",
+            "delay-pc2400",
+            "delay-pc2700",
+            "delay-pc2830qx2",
+            "delay-pc3000",
+            "delay-pc600",
+            "delay-pc850",
+            "delay-pcgen03-2p",
+            "delay-pcgen03-3p",
+            "delay-pcgen03-4p",
+            "delay-pcgen03-5p",
+            "delay-pcgen03-6p",
+            "delay-pcgen04-2p",
+            "dl360-G7",
+            "dl360-vm",
+            "e6520",
+            "emote",
+            "enodeb",
+            "flex900",
+            "gec16-port",
+            "gec16port",
+            "gpuhost",
+            "gpunode",
+            "gpunode-vm",
+            "hp5406",
+            "interconnect",
+            "interconnect-vm",
+            "ipv4",
+            "ixp",
+            "ixp-bv",
+            "lan",
+            "m400",
+            "motehost",
+            "netfpga",
+            "netfpga2",
+            "orca-iscsi-luns",
+            "orca-transit-net-vlan",
+            "orca-vm-cloud",
+            "orca-xcat-cloud",
+            "pc",
+            "pc1500",
+            "pc1500-vm",
+            "pc2000",
+            "pc2000-vm",
+            "pc2400",
+            "pc2400-vm",
+            "pc2400hp",
+            "pc2400hp-vm",
+            "pc2400w",
+            "pc2700",
+            "pc2700-vm",
+            "pc2830qx2",
+            "pc2830qx2-vm",
+            "pc2gen",
+            "pc3000",
+            "pc3000-vm",
+            "pc600",
+            "pc600-vm",
+            "pc6000",
+            "pc850",
+            "pc850-vm",
+            "pcRemote",
+            "pcgen01-6p",
+            "pcgen01-6p-vm",
+            "pcgen03-1p",
+            "pcgen03-1p-vm",
+            "pcgen03-2p",
+            "pcgen03-2p-vm",
+            "pcgen03-3p",
+            "pcgen03-3p-vm",
+            "pcgen03-4p",
+            "pcgen03-4p-vm",
+            "pcgen03-5p",
+            "pcgen03-5p-vm",
+            "pcgen03-6p",
+            "pcgen03-6p-vm",
+            "pcgen04-1p",
+            "pcgen04-1p-vm",
+            "pcgen04-2p",
+            "pcgen04-2p-vm",
+            "pcgen04lsi-2p",
+            "pcgen04lsi-2p-vm",
+            "pcgen04raid-2p",
+            "pcgen04raid-2p-vm",
+            "pcivy",
+            "pcivy-vm",
+            "pcpg",
+            "pcpg-i2",
+            "pcpg-i2-vm",
+            "pcpg-vm",
+            "pcsanhost",
+            "pcvm",
+            "pcvm1500",
+            "pcvm2000",
+            "pcvm2400",
+            "pcvm2400hp",
+            "pcvm2700",
+            "pcvm2830qx2",
+            "pcvm3000",
+            "pcvm600",
+            "pcvm850",
+            "pcvmgen01-6p",
+            "pcvmgen03-1p",
+            "pcvmgen03-2p",
+            "pcvmgen03-3p",
+            "pcvmgen03-4p",
+            "pcvmgen03-5p",
+            "pcvmgen03-6p",
+            "pcvmgen04-1p",
+            "pcvmgen04-2p",
+            "pcvmgen04lsi-2p",
+            "pcvmgen04raid-2p",
+            "pcvmivy",
+            "pcvmpg",
+            "pcvmpg-i2",
+            "pcvron",
+            "pcvroninet",
+            "pcvwa",
+            "pm-mote",
+            "powermon",
+            "r320",
+            "r320-vm",
+            "r720",
+            "r720-vm",
+            "spp",
+            "spp-vm",
+            "sppvm",
+            "supernode",
+            "supernode-vm",
+            "switch",
+            "wire",
+            "xcvr2450"
+        ],
+        "linkTypes": [
+            "80211a",
+            "80211b",
+            "80211g",
+            "ethernet",
+            "ethernet-100000",
+            "ethernet-1000000",
+            "ethernet-10000000",
+            "ethernet-arista1",
+            "ethernet-atca",
+            "ethernet-bce",
+            "ethernet-bg100",
+            "ethernet-bge",
+            "ethernet-bge100",
+            "ethernet-bxe",
+            "ethernet-c300b",
+            "ethernet-cisco1",
+            "ethernet-cisco10",
+            "ethernet-cisco13",
+            "ethernet-cisco2",
+            "ethernet-cisco3",
+            "ethernet-cisco4",
+            "ethernet-cisco5",
+            "ethernet-cisco6",
+            "ethernet-cisco7",
+            "ethernet-cisco8",
+            "ethernet-dc",
+            "ethernet-em",
+            "ethernet-em100",
+            "ethernet-force10-1",
+            "ethernet-force10-2",
+            "ethernet-fxp",
+            "ethernet-generic",
+            "ethernet-generic_10G",
+            "ethernet-generic_1G",
+            "ethernet-highvlan",
+            "ethernet-hp5412a",
+            "ethernet-igb",
+            "ethernet-ix",
+            "ethernet-ixp_100",
+            "ethernet-mlxen",
+            "ethernet-ms-chassis1-switchb",
+            "ethernet-ms-chassis2-switchb",
+            "ethernet-ms-chassis3-switchb",
+            "ethernet-ms-chassis4-switchb",
+            "ethernet-ms-chassis5-switchb",
+            "ethernet-ms-chassis6-switchb",
+            "ethernet-ms-chassis7-switchb",
+            "ethernet-nf2",
+            "ethernet-nfe",
+            "ethernet-procurve-pgeni-atla",
+            "ethernet-procurve-pgeni-hous",
+            "ethernet-procurve-pgeni-losa",
+            "ethernet-procurve-pgeni-salt",
+            "ethernet-procurve-pgeni-uen",
+            "ethernet-procurve-pgeni-wash",
+            "ethernet-procurve2",
+            "ethernet-procurve3",
+            "ethernet-procurve4",
+            "ethernet-procurve5",
+            "ethernet-procurveA",
+            "ethernet-procurveS",
+            "ethernet-procurveU",
+            "ethernet-sis",
+            "ethernet-sk",
+            "ethernet-xcvr2450",
+            "flex900",
+            "ipv4",
+            "wire",
+            "wire-100000",
+            "wire-1000000",
+            "wire-apcon1",
+            "wire-apcon_1G",
+            "wire-bce",
+            "xcvr2450"
+        ],
+        "types": [
+            "",
+            "EC2C1Medium",
+            "EC2M1Large",
+            "EC2M1Small",
+            "EC2M1XLarge",
+            "EucaC1Medium",
+            "EucaC1XLarge",
+            "EucaM1Large",
+            "EucaM1Small",
+            "EucaM1XLarge",
+            "default-vm"
+        ]
+    },
+    "extra": {
+        "defaults": [
+            {
+	        "name": "VM",
+		"type": "default-vm",
+		"icon": "https://portal.geni.net/images/VM-noTxt-centered.svg"
+            },
+            {
+	        "name": "Xen VM",
+		"type": "emulab-xen",
+		"image": "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU12-64-STD",
+		"icon": "https://portal.geni.net/images/Xen-VM.svg"
+            },
+            {
+	        "name": "EG VM",
+		"type": "XOSmall",
+		"hardware": "orca-vm-cloud",
+		"icon": "https://portal.geni.net/images/EG-VM-noTxt-centered.svg"
+            },
+            {
+	        "name": "Raw PC IG",
+		"type": "emulab-rawpc",
+		"image": "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU12-64-STD",
+		"hardware": "pc",
+		"icon": "https://portal.geni.net/images/RawPC-IG.svg"
+            },
+            {
+	        "name": "Raw PC EG",
+		"type": "ExoGENI-M4",
+		"hardware": "orca-xcat-cloud",
+		"icon": "https://portal.geni.net/images/RawPC-EG.svg"
+            },
+            {
+	        "name": "OF OVS",
+		"type": "emulab-xen",
+		"image": "urn:publicid:IDN+emulab.net+image+emulab-ops:Ubuntu12-64-OVS",
+		"icon": "https://portal.geni.net/images/router.svg"
+            }
+        ],
+        "icons": [
+            {
+                "name": "Node",
+                "id": "https://www.emulab.net/protogeni/jacks-stable/images/default.svg"
+            },
+            {
+                "name": "Server",
+                "id": "https://www.emulab.net/protogeni/jacks-stable/images/server.svg"
+            },
+            {
+                "name": "Router",
+                "id": "https://www.emulab.net/protogeni/jacks-stable/images/router.svg"
+            }
+        ],
+        "images": "Leave this blank it is filled in by make-portal-config",
+        "types": [
+            {
+                "id": "ExoGENI-M4",
+                "name": "ExoGENI-M4"
+            },
+            {
+                "id": "default-vm",
+                "name": "default-vm"
+            }
+        ],
+        "linkTypes": [
+            {
+                "id": "lan",
+                "name": "Ethernet"
+            },
+            {
+                "id": "vlan",
+                "name": "Stitched Ethernet"
+            },
+            {
+                "id": "gre-tunnel",
+                "name": "GRE Tunnel",
+	        "ip": "auto"
+            },
+            {
+                "id": "egre-tunnel",
+                "name": "EGRE Tunnel",
+	        "ip": "auto"
+            }
+        ],
+        "constraints": [
+            {
+	        "node": {
+	            "types": [ "emulab-openvz", "raw-pc" ]
+	        },
+	        "link": {
+	            "linkTypes": [ "gre-tunnel" ]
+	        },
+	        "node2": {
+	            "types": [ "emulab-openvz", "raw-pc" ]
+	        }
+            },
+            {
+	        "node": {
+	            "types": [ "emulab-xen" ]
+	        },
+	        "link": {
+	            "linkTypes": [ "egre-tunnel" ]
+	        },
+	        "node2": {
+	            "types": [ "emulab-xen" ]
+	        }
+            },
+            {
+	        "node": {
+	            "types": [ "*" ]
+	        },
+	        "link": {
+	            "linkTypes": [ "lan", "vlan" ]
+	        },
+	        "node2": {
+	            "types": [ "*" ]
+	        }
+            },
+            {
+                "node": {
+                    "aggregates": [
+                        "urn:publicid:IDN+exogeni.net+authority+am"
+                    ],
+                    "hardware": [
+                        "!"
+                    ],
+                    "types": [
+                        "XOLarge",
+                        "XOMedium",
+                        "XOSmall",
+                        "XOXlarge",
+                        "ExoGENI-M4"
+                    ]
+                }
+            },
+            {
+                "node": {
+                    "aggregates": [
+                        "urn:publicid:IDN+exogeni.net+authority+am"
+                    ],
+                    "images": [
+                        "!"
+                    ],
+                    "types": [
+                        "XOLarge",
+                        "XOMedium",
+                        "XOSmall",
+                        "XOXlarge",
+                        "ExoGENI-M4"
+                    ]
+                }
+            },
+            {
+                "node": {
+                    "aggregates": [
+                        "*"
+                    ],
+                    "images": [
+                        "!"
+                    ],
+                    "types": [
+                        "default-vm"
+                    ]
+                }
+            },
+            {
+                "node": {
+                    "aggregates": [
+                        "*"
+                    ],
+                    "hardware": [
+                        "!"
+                    ],
+                    "types": [
+                        "default-vm"
+                    ]
+                }
+            }
+        ]
+    },
+    "aggregate_names": {
+        "urn:publicid:IDN+geni.case.edu+authority+cm": "Case Western",
+        "urn:publicid:IDN+geni.it.cornell.edu+authority+cm": "Cornell",
+        "urn:publicid:IDN+instageni.clemson.edu+authority+cm": "Clemson",
+        "urn:publicid:IDN+instageni.rnoc.gatech.edu+authority+cm": "Georgia Tech",
+        "urn:publicid:IDN+instageni.illinois.edu+authority+cm": "Illinois",
+        "urn:publicid:IDN+instageni.ku.gpeni.net+authority+cm": "Kansas",
+        "urn:publicid:IDN+lan.sdn.uky.edu+authority+cm": "Kentucky",
+        "urn:publicid:IDN+geni.kettering.edu+authority+cm": "Kettering",
+        "urn:publicid:IDN+instageni.lsu.edu+authority+cm": "LSU",
+        "urn:publicid:IDN+instageni.rnet.missouri.edu+authority+cm": "Missouri",
+        "urn:publicid:IDN+instageni.iu.edu+authority+cm": "Indiana",
+        "urn:publicid:IDN+instageni.northwestern.edu+authority+cm": "Northwestern",
+        "urn:publicid:IDN+instageni.nps.edu+authority+cm": "NPS",
+        "urn:publicid:IDN+instageni.nysernet.org+authority+cm": "NYSERNet",
+        "urn:publicid:IDN+genirack.nyu.edu+authority+cm": "NYU",
+        "urn:publicid:IDN+instageni.cs.princeton.edu+authority+cm": "Princeton",
+        "urn:publicid:IDN+instageni.sox.net+authority+cm": "SOX",
+        "urn:publicid:IDN+instageni.stanford.edu+authority+cm": "Stanford",
+        "urn:publicid:IDN+instageni.idre.ucla.edu+authority+cm": "UCLA",
+        "urn:publicid:IDN+pks2.sdn.uky.edu+authority+cm": "Kentucky II",
+        "urn:publicid:IDN+cisco.geniracks.net+authority+cm": "Utah Cisco",
+        "urn:publicid:IDN+utahddc.geniracks.net+authority+cm": "Utah DDC",
+        "urn:publicid:IDN+instageni.wisc.edu+authority+cm": "Wisconsin"
+    },
+    "aggregate_types": {
+        "urn:publicid:IDN+geni.case.edu+authority+cm": "ig",
+        "urn:publicid:IDN+geni.it.cornell.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.clemson.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.rnoc.gatech.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.illinois.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.ku.gpeni.net+authority+cm": "ig",
+        "urn:publicid:IDN+lan.sdn.uky.edu+authority+cm": "ig",
+        "urn:publicid:IDN+geni.kettering.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.lsu.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.rnet.missouri.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.iu.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.northwestern.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.nps.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.nysernet.org+authority+cm": "ig",
+        "urn:publicid:IDN+genirack.nyu.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.cs.princeton.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.sox.net+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.stanford.edu+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.idre.ucla.edu+authority+cm": "ig",
+        "urn:publicid:IDN+pks2.sdn.uky.edu+authority+cm": "ig",
+        "urn:publicid:IDN+cisco.geniracks.net+authority+cm": "ig",
+        "urn:publicid:IDN+utahddc.geniracks.net+authority+cm": "ig",
+        "urn:publicid:IDN+instageni.wisc.edu+authority+cm": "ig"
+    },
+    "nomac_images": {
+        "urn:publicid:IDN+emulab.net+image+emulab-ops:Ubuntu12-64-OVS": true,
+        "urn:publicid:IDN+emulab.net+image+ubuntu-14.04-OVS": true
+    },
+    "link_info": {
+        "local": ["lan"],
+        "tunnel": ["gre-tunnel", "egre-tunnel"],
+        "stitch-ig": ["vlan"],
+        "stitch-eg": ["!"]
+    },
+    "stitchable_ig": [
+        "urn:publicid:IDN+utahddc.geniracks.net+authority+cm",
+        "urn:publicid:IDN+instageni.nysernet.org+authority+cm"
+    ],
+    "stitchable_eg": [
+        "urn:publicid:IDN+exogeni.net:fiuvmsite+authority+am",
+        "urn:publicid:IDN+exogeni.net:uflvmsite+authority+am"
+    ]
+}
