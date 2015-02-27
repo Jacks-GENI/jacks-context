@@ -342,13 +342,13 @@
             },
             {
 	        "node": {
-	            "types": [ "emulab-xen" ]
+	            "types": [ "emulab-xen", "default-vm" ]
 	        },
 	        "link": {
 	            "linkTypes": [ "egre-tunnel" ]
 	        },
 	        "node2": {
-	            "types": [ "emulab-xen" ]
+	            "types": [ "emulab-xen", "default-vm" ]
 	        }
             },
             {

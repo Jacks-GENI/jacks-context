@@ -194,11 +194,16 @@ def calculate_type_link(is_basic, ads, aggregateNames):
     add_stitchable_constraints(stitchable_eg,
                                link_info['stitch-eg'], result)
   if len(link_info['tunnel']) > 0:
-    result.append({
-      'node': { 'aggregates': ['*'] },
-      'link': { 'linkTypes': link_info['tunnel'] },
-      'node2': { 'aggregates': ['*'] }
-    })
+    tunnelOk = []
+    for urn in aggregateNames:
+      if urn in aggregates['types'] and aggregates['types'][urn] == 'ig':
+        tunnelOk.append(urn)
+    if len(tunnelOk) > 0:
+      result.append({
+        'node': { 'aggregates': tunnelOk },
+        'link': { 'linkTypes': link_info['tunnel'] },
+        'node2': { 'aggregates': tunnelOk }
+      })
   if len(link_info['local']) > 0:
     for urn in aggregateNames:
       result.append({
@@ -274,11 +279,7 @@ def calculate_images(is_basic, ads):
       cmurn = node.component_manager_id
       for sliver_name, images in node.images.iteritems():
         for image in images:
-          if cmurn == 'urn:publicid:IDN+clemson-clemson-control-1.clemson.edu+authority+am':
-            print image
           imageId = get_image_id(image, cmurn)
-          #if imageId == 'centos-6.5':
-          #  print cmurn, image
           if not imageId in found:
             description = image.description
             if description is None:
