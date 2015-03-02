@@ -127,8 +127,9 @@ def insert_agg_data(config, aggs):
         if a.isExoGENI():
             compute_aggs.append(a)
             eg_aggs.append(a)
+            eg_stitchable.append(a)
             if (a.isStitchable()):
-                eg_stitchable.append(a)
+                ig_stitchable.append(a)
         elif a.isInstaGENI():
             compute_aggs.append(a)
             ig_aggs.append(a)
@@ -138,7 +139,7 @@ def insert_agg_data(config, aggs):
             compute_aggs.append(a)
             og_aggs.append(a)
             if (a.isStitchable()):
-                og_stitchable.append(a)
+                ig_stitchable.append(a)
 
     # Would prefer dictionary comprehensions but we need 2.6 compatibility
     config['aggregate_names'] = dict((a.urn, a.name) for a in compute_aggs)
@@ -148,7 +149,6 @@ def insert_agg_data(config, aggs):
     config['aggregate_types'] = agg_types
     config['stitchable_eg'] = [a.urn for a in eg_stitchable]
     config['stitchable_ig'] = [a.urn for a in ig_stitchable]
-    config['stitchable_og'] = [a.urn for a in og_stitchable]
 
 #----------------------------------------------------------------------
 # Advertise images in the ExoGENI image registry
