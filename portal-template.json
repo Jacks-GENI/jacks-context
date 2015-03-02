@@ -482,7 +482,7 @@
         "local": ["lan"],
         "tunnel": ["gre-tunnel", "egre-tunnel"],
         "stitch-ig": ["vlan"],
-        "stitch-eg": ["!"]
+        "stitch-eg": ["vlan"]
     },
     "stitchable_ig": [
         "urn:publicid:IDN+utahddc.geniracks.net+authority+cm",
