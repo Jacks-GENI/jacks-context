@@ -265,7 +265,7 @@
             },
             {
 	        "name": "Raw PC IG",
-		"type": "emulab-rawpc",
+		"type": "raw-pc",
 		"image": "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU12-64-STD",
 		"hardware": "pc",
 		"icon": "https://portal.geni.net/images/RawPC-IG.svg"
