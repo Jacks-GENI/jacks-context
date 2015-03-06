@@ -421,6 +421,24 @@
                         "default-vm"
                     ]
                 }
+            },
+            {
+                "link": {
+                    "linkTypes": [
+                        "vlan",
+                        "lan"
+                    ]
+                },
+                "node": {
+                    "aggregates": [
+                        "urn:publicid:IDN+exogeni.net+authority+am"
+                    ]
+                },
+                "node2": {
+                    "aggregates": [
+                        "urn:publicid:IDN+exogeni.net+authority+am"
+                    ]
+                }
             }
         ]
     },
