@@ -28,6 +28,7 @@ aggregates = {
   'types': {}
 }
 nomac_images = {}
+no_link = {}
 stitchable_ig = []
 stitchable_eg = []
 link_info = {
@@ -36,6 +37,7 @@ link_info = {
   'stitch-ig': [],
   'stitch-eg': []
 }
+debug = False
 
 context = config.buildContext()
 
@@ -196,7 +198,7 @@ def calculate_type_link(is_basic, ads, aggregateNames):
   if len(link_info['tunnel']) > 0:
     tunnelOk = []
     for urn in aggregateNames:
-      if urn in aggregates['types'] and aggregates['types'][urn] == 'ig':
+      if urn in aggregates['types'] and aggregates['types'][urn] == 'ig' and not urn in no_link:
         tunnelOk.append(urn)
     if len(tunnelOk) > 0:
       result.append({
@@ -206,11 +208,12 @@ def calculate_type_link(is_basic, ads, aggregateNames):
       })
   if len(link_info['local']) > 0:
     for urn in aggregateNames:
-      result.append({
-        'node': { 'aggregates': [urn] },
-        'link': { 'linkTypes': link_info['local'] },
-        'node2': { 'aggregates': [urn] }
-      })
+      if not urn in no_link:
+        result.append({
+          'node': { 'aggregates': [urn] },
+          'link': { 'linkTypes': link_info['local'] },
+          'node2': { 'aggregates': [urn] }
+        })
 
   return result
 
@@ -423,7 +426,7 @@ def do_parallel (is_basic=True, sites=[], output=None, rspec_dir=None):
   sys.stderr.write("Processing complete\n")
 
 def parse_config(file, is_basic):
-  global advanced_types, advanced_hardware, advanced_images, advanced_link_types, extra, nomac_images, stitchable_ig, stitchable_eg, link_info, aggregates
+  global advanced_types, advanced_hardware, advanced_images, advanced_link_types, extra, nomac_images, no_link, stitchable_ig, stitchable_eg, link_info, aggregates
   f = open(file, 'r')
   jsonText = f.read()
   f.close()
@@ -445,6 +448,8 @@ def parse_config(file, is_basic):
     extra = config['extra']
   if 'nomac_images' in config:
     nomac_images = config['nomac_images']
+  if 'no_link' in config:
+    no_link = config['no_link']
   if 'stitchable_ig' in config:
     stitchable_ig = config['stitchable_ig']
   if 'stitchable_eg' in config:
@@ -453,6 +458,7 @@ def parse_config(file, is_basic):
     link_info = config['link_info']
 
 if __name__ == '__main__':
+  global context
   parser = ArgumentParser()
   parser.add_argument('--config', dest='config', default=None,
                       help='Configuration file (json) for extra constraints')
@@ -465,7 +471,10 @@ if __name__ == '__main__':
                       help='Directory for rspecs for debugging')
   parser.add_argument('site', nargs='+',
                       help='InstaGENI Site names ex: ig-utah')
+  parser.add_argument('debug', dest='debug', default=False, const=True, action='store_const', help='Print extra debugging information')
   args = parser.parse_args()
+  if args.debug:
+    context.debug = True
 
   if args.config:
     parse_config(args.config, args.basic)
