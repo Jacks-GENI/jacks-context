@@ -23,9 +23,12 @@ python jacks-context.py --basic \
                         eg-uh \
                         eg-wsu \
                         eg-wvn \
+                        gpo-og \
+                        ig-cenic \
                         ig-chicago \
                         ig-clemson \
                         ig-cornell \
+                        ig-cwru \
                         ig-gatech \
                         ig-gpo \
                         ig-illinois \
@@ -45,8 +48,10 @@ python jacks-context.py --basic \
                         ig-stanford \
                         ig-ucla \
                         ig-ukypks2 \
+                        ig-umkc \
                         ig-utah \
                         ig-utahddc \
+                        ig-utc \
                         ig-wisconsin \
                         pg-kentucky \
                         pg-utah \

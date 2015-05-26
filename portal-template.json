@@ -265,7 +265,7 @@
             },
             {
 	        "name": "Raw PC IG",
-		"type": "emulab-rawpc",
+		"type": "raw-pc",
 		"image": "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU12-64-STD",
 		"hardware": "pc",
 		"icon": "https://portal.geni.net/images/RawPC-IG.svg"
@@ -297,7 +297,7 @@
                 "id": "https://www.emulab.net/protogeni/jacks-stable/images/router.svg"
             }
         ],
-        "images": "Leave this blank it is filled in by make-portal-config",
+        "images": "This is filled in by make-portal-config",
         "types": [
             {
                 "id": "ExoGENI-M4",
@@ -421,58 +421,32 @@
                         "default-vm"
                     ]
                 }
+            },
+            {
+                "link": {
+                    "linkTypes": [
+                        "vlan",
+                        "lan"
+                    ]
+                },
+                "node": {
+                    "aggregates": [
+                        "urn:publicid:IDN+exogeni.net+authority+am"
+                    ]
+                },
+                "node2": {
+                    "aggregates": [
+                        "urn:publicid:IDN+exogeni.net+authority+am"
+                    ]
+                }
             }
         ]
     },
     "aggregate_names": {
-        "urn:publicid:IDN+geni.case.edu+authority+cm": "Case Western",
-        "urn:publicid:IDN+geni.it.cornell.edu+authority+cm": "Cornell",
-        "urn:publicid:IDN+instageni.clemson.edu+authority+cm": "Clemson",
-        "urn:publicid:IDN+instageni.rnoc.gatech.edu+authority+cm": "Georgia Tech",
-        "urn:publicid:IDN+instageni.illinois.edu+authority+cm": "Illinois",
-        "urn:publicid:IDN+instageni.ku.gpeni.net+authority+cm": "Kansas",
-        "urn:publicid:IDN+lan.sdn.uky.edu+authority+cm": "Kentucky",
-        "urn:publicid:IDN+geni.kettering.edu+authority+cm": "Kettering",
-        "urn:publicid:IDN+instageni.lsu.edu+authority+cm": "LSU",
-        "urn:publicid:IDN+instageni.rnet.missouri.edu+authority+cm": "Missouri",
-        "urn:publicid:IDN+instageni.iu.edu+authority+cm": "Indiana",
-        "urn:publicid:IDN+instageni.northwestern.edu+authority+cm": "Northwestern",
-        "urn:publicid:IDN+instageni.nps.edu+authority+cm": "NPS",
-        "urn:publicid:IDN+instageni.nysernet.org+authority+cm": "NYSERNet",
-        "urn:publicid:IDN+genirack.nyu.edu+authority+cm": "NYU",
-        "urn:publicid:IDN+instageni.cs.princeton.edu+authority+cm": "Princeton",
-        "urn:publicid:IDN+instageni.sox.net+authority+cm": "SOX",
-        "urn:publicid:IDN+instageni.stanford.edu+authority+cm": "Stanford",
-        "urn:publicid:IDN+instageni.idre.ucla.edu+authority+cm": "UCLA",
-        "urn:publicid:IDN+pks2.sdn.uky.edu+authority+cm": "Kentucky II",
-        "urn:publicid:IDN+cisco.geniracks.net+authority+cm": "Utah Cisco",
-        "urn:publicid:IDN+utahddc.geniracks.net+authority+cm": "Utah DDC",
-        "urn:publicid:IDN+instageni.wisc.edu+authority+cm": "Wisconsin"
+        "This is filled in by make-portal-config": "empty"
     },
     "aggregate_types": {
-        "urn:publicid:IDN+geni.case.edu+authority+cm": "ig",
-        "urn:publicid:IDN+geni.it.cornell.edu+authority+cm": "ig",
-        "urn:publicid:IDN+instageni.clemson.edu+authority+cm": "ig",
-        "urn:publicid:IDN+instageni.rnoc.gatech.edu+authority+cm": "ig",
-        "urn:publicid:IDN+instageni.illinois.edu+authority+cm": "ig",
-        "urn:publicid:IDN+instageni.ku.gpeni.net+authority+cm": "ig",
-        "urn:publicid:IDN+lan.sdn.uky.edu+authority+cm": "ig",
-        "urn:publicid:IDN+geni.kettering.edu+authority+cm": "ig",
-        "urn:publicid:IDN+instageni.lsu.edu+authority+cm": "ig",
-        "urn:publicid:IDN+instageni.rnet.missouri.edu+authority+cm": "ig",
-        "urn:publicid:IDN+instageni.iu.edu+authority+cm": "ig",
-        "urn:publicid:IDN+instageni.northwestern.edu+authority+cm": "ig",
-        "urn:publicid:IDN+instageni.nps.edu+authority+cm": "ig",
-        "urn:publicid:IDN+instageni.nysernet.org+authority+cm": "ig",
-        "urn:publicid:IDN+genirack.nyu.edu+authority+cm": "ig",
-        "urn:publicid:IDN+instageni.cs.princeton.edu+authority+cm": "ig",
-        "urn:publicid:IDN+instageni.sox.net+authority+cm": "ig",
-        "urn:publicid:IDN+instageni.stanford.edu+authority+cm": "ig",
-        "urn:publicid:IDN+instageni.idre.ucla.edu+authority+cm": "ig",
-        "urn:publicid:IDN+pks2.sdn.uky.edu+authority+cm": "ig",
-        "urn:publicid:IDN+cisco.geniracks.net+authority+cm": "ig",
-        "urn:publicid:IDN+utahddc.geniracks.net+authority+cm": "ig",
-        "urn:publicid:IDN+instageni.wisc.edu+authority+cm": "ig"
+        "This is filled in by make-portal-config": "empty"
     },
     "nomac_images": {
         "urn:publicid:IDN+emulab.net+image+emulab-ops:Ubuntu12-64-OVS": true,
@@ -482,14 +456,12 @@
         "local": ["lan"],
         "tunnel": ["gre-tunnel", "egre-tunnel"],
         "stitch-ig": ["vlan"],
-        "stitch-eg": ["vlan"]
+        "stitch-eg": ["!"]
     },
     "stitchable_ig": [
-        "urn:publicid:IDN+utahddc.geniracks.net+authority+cm",
-        "urn:publicid:IDN+instageni.nysernet.org+authority+cm"
+        "This is filled in by make-portal-config"
     ],
     "stitchable_eg": [
-        "urn:publicid:IDN+exogeni.net:fiuvmsite+authority+am",
-        "urn:publicid:IDN+exogeni.net:uflvmsite+authority+am"
+        "This is filled in by make-portal-config"
     ]
 }
