@@ -57,4 +57,7 @@ python jacks-context.py --basic \
                         ig-wisconsin \
                         pg-kentucky \
                         pg-utah \
-                        pg-wall2
+                        pg-wall1 \
+                        pg-wall2 \
+                        pg-wilab \
+                        ukl-og
