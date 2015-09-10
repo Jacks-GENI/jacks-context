@@ -37,6 +37,7 @@ link_info = {
   'stitch-ig': [],
   'stitch-eg': []
 }
+site_info = {}
 debug = False
 
 context = config.buildContext()
@@ -132,6 +133,7 @@ def calculate_type_image(is_basic, ads):
         if not name in advanced_types:
           pair.addPair(name, '!')
       for sliver_name, images in node.images.iteritems():
+        add_site_type(cmurn, sliver_name)
         for image in images:
           imageId = get_image_id(image, cmurn)
           if not is_basic or (not sliver_name in advanced_types and
@@ -140,11 +142,11 @@ def calculate_type_image(is_basic, ads):
   for cmurn, pair in pairMap.iteritems():
     for sliver_name, image_name in pair.getPairs(is_basic):
       result.append({
-        'node': {
-          'types': [sliver_name],
-          'images': [image_name],
-          'aggregates': [cmurn]
-        }
+       'node': {
+         'types': [sliver_name],
+       	 'images': [image_name],
+         'aggregates': [cmurn]
+       }
       })
   return result
 
@@ -172,6 +174,7 @@ def calculate_type_hardware(is_basic, ads):
           pair.addPair('!', name)
 
       for hardware_name, slots in node.hardware_types.iteritems():
+        add_site_hardware(cmurn, hardware_name)
         for sliver_name in node.sliver_types:
           if not is_basic or (not sliver_name in advanced_types and
                               not hardware_name in advanced_hardware):
@@ -186,6 +189,19 @@ def calculate_type_hardware(is_basic, ads):
         }
       })
   return result
+
+def add_site_type(urn, name):
+  site = add_site(urn)
+  site['types'][name] = True
+
+def add_site_hardware(urn, name):
+  site = add_site(urn)
+  site['hardware'][name] = True
+
+def add_site(urn):
+  if not urn in site_info:
+    site_info[urn] = { 'types': {}, 'hardware': {} }
+  return site_info[urn]
 
 def calculate_type_link(is_basic, ads, aggregateNames):
   result = []
@@ -342,6 +358,14 @@ def calculate_link_types(is_basic, ads):
           found[link_type] = 1
   return result
 
+def calculate_site_info(is_basic):
+  result = {}
+  for key in site_info.keys():
+    result[key] = {}
+    result[key]['types'] = site_info[key]['types'].keys()
+    result[key]['hardware'] = site_info[key]['hardware'].keys()
+  return result
+
 def make_initial_found(is_basic, advanced_list):
   result = {}
   if is_basic:
@@ -357,6 +381,7 @@ def calculate_context(is_basic, ads):
   constraints = calculate_constraints(is_basic, ads, aggregateNames)
   if 'constraints' in extra:
     constraints.extend(extra['constraints'])
+  canvas['site_info'] = calculate_site_info(is_basic)
   return {'canvasOptions': canvas,
           'constraints': constraints }
 
@@ -458,7 +483,7 @@ def parse_config(file, is_basic):
     link_info = config['link_info']
 
 if __name__ == '__main__':
-  global context
+#  global context
   parser = ArgumentParser()
   parser.add_argument('--config', dest='config', default=None,
                       help='Configuration file (json) for extra constraints')
@@ -471,7 +496,7 @@ if __name__ == '__main__':
                       help='Directory for rspecs for debugging')
   parser.add_argument('site', nargs='+',
                       help='InstaGENI Site names ex: ig-utah')
-  parser.add_argument('debug', dest='debug', default=False, const=True, action='store_const', help='Print extra debugging information')
+  parser.add_argument('--debug', dest='debug', default=False, const=True, action='store_const', help='Print extra debugging information')
   args = parser.parse_args()
   if args.debug:
     context.debug = True
