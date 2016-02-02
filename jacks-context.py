@@ -8,6 +8,7 @@ import time
 import json
 import sys
 import os
+import tempfile
 
 import config
 import geni.aggregate.instageni as IG
@@ -388,8 +389,11 @@ def calculate_context(is_basic, ads):
 def get_advertisement (context, site, pipe, rspec_dir=None):
   try:
     ad = site.listresources(context)
-    pipe.send([ad.text])
     sys.stderr.write("[%s] Fetched Advertisement\n" % (site.name))
+    (fd, path) = tempfile.mkstemp()
+    with os.fdopen(fd, "w") as f:
+      f.write(ad.text)
+    pipe.send([path])
     if rspec_dir:
       rspec_path = os.path.join(rspec_dir, site.name)
       with open(rspec_path, 'w') as f:
@@ -398,7 +402,8 @@ def get_advertisement (context, site, pipe, rspec_dir=None):
   except Exception, e:
     pipe.send([])
     sys.stderr.write("[%s] OFFLINE\n" % (site.name))
-  pipe.close()
+  finally:
+    pipe.close()
 
 def do_parallel (is_basic=True, sites=[], output=None, rspec_dir=None):
   aggmapping = dict()
@@ -428,13 +433,11 @@ def do_parallel (is_basic=True, sites=[], output=None, rspec_dir=None):
     child = children[i]
     pipe = pipes[i]
     try:
-      adTexts = pipe.recv()
-      #f = open('ads.txt', 'w+')
-      for adText in adTexts:
-        #f.write(adText)
-        #f.write('\n\n\n\n')
+      adFiles = pipe.recv()
+      for adFile in adFiles:
+        with open(adFile, 'r') as f:
+          adText = f.read()
         ads.append(Advertisement(xml=adText))
-      #f.close()
     except EOFError, e:
       pass
     child.join()
