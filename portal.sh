@@ -50,6 +50,7 @@ python jacks-context.py --basic \
                         ig-stanford \
                         ig-ucla \
                         ig-ukypks2 \
+                        ig-ukymcv \
                         ig-umkc \
                         ig-utah \
                         ig-utahddc \
