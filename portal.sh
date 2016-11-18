@@ -51,6 +51,7 @@ python jacks-context.py --basic \
                         ig-ucla \
                         ig-ukypks2 \
                         ig-ukymcv \
+                        ig-umich \
                         ig-umkc \
                         ig-utah \
                         ig-utahddc \
