@@ -444,6 +444,7 @@ def do_parallel(is_basic=True, sites=[], output=None, rspec_dir=None):
     children = []
     pipes = []
     ads = []
+    adFiles = []
     for site_name in sites:
         site = None
         if site_name in aggmapping:
@@ -458,15 +459,13 @@ def do_parallel(is_basic=True, sites=[], output=None, rspec_dir=None):
     for i in xrange(len(children)):
         child = children[i]
         pipe = pipes[i]
-        try:
-            adFiles = pipe.recv()
-            for adFile in adFiles:
-                with open(adFile, 'r') as f:
-                    adText = f.read()
-                ads.append(Advertisement(xml=adText))
-        except EOFError, e:
-            pass
+        adFiles.extend(pipe.recv())
         child.join()
+    sys.stderr.write('Loading %d advertisements\n' % (len(adFiles)))
+    for adFile in adFiles:
+        with open(adFile, 'r') as f:
+            adText = f.read()
+        ads.append(Advertisement(xml=adText))
     sys.stderr.write("Processing %d advertisements\n" % len(ads))
     jacks_context = calculate_context(is_basic, ads)
     json_text = json.dumps(jacks_context, sort_keys=True, indent=2,
