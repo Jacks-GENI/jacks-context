@@ -64,24 +64,24 @@ class ConstraintPair:
     # Mark a combination as being available on this node
     def addPair(self, a, b):
         # Add a to the count if it hasn't been seen
-        if not a in self.aSeen:
-            if not a in self.aCount:
+        if a not in self.aSeen:
+            if a not in self.aCount:
                 self.aCount[a] = 0
             self.aCount[a] += 1
             self.aSeen[a] = 1
         # Add b to the count if it hasn't been seen
-        if not b in self.bSeen:
-            if not b in self.bCount:
+        if b not in self.bSeen:
+            if b not in self.bCount:
                 self.bCount[b] = 0
             self.bCount[b] += 1
             self.bSeen[b] = 1
         # Add the pair (a, b) to the count if it hasn't been seen
-        if not a in self.comboCount:
+        if a not in self.comboCount:
             self.comboCount[a] = {}
-        if not a in self.comboSeen:
+        if a not in self.comboSeen:
             self.comboSeen[a] = {}
-        if not b in self.comboSeen[a]:
-            if not b in self.comboCount[a]:
+        if b not in self.comboSeen[a]:
+            if b not in self.comboCount[a]:
                 self.comboCount[a][b] = 0
             self.comboCount[a][b] += 1
             self.comboSeen[a][b] = 1
@@ -134,14 +134,14 @@ def calculate_type_image(is_basic, ads):
             pair.newNode()
             slivernames = []
             for name in node.sliver_types:
-                if not name in advanced_types:
+                if name not in advanced_types:
                     pair.addPair(name, '!')
             for sliver_name, images in node.images.iteritems():
                 add_site_type(cmurn, sliver_name)
                 for image in images:
                     imageId = get_image_id(image, cmurn)
-                    if not is_basic or (not sliver_name in advanced_types and
-                                        not imageId in advanced_images):
+                    if not is_basic or (sliver_name not in advanced_types and
+                                        imageId not in advanced_images):
                         pair.addPair(sliver_name, imageId)
     for cmurn, pair in pairMap.iteritems():
         for sliver_name, image_name in pair.getPairs(is_basic):
@@ -170,19 +170,20 @@ def calculate_type_hardware(is_basic, ads):
 
             slivernames = []
             for name in node.sliver_types:
-                if not name in advanced_types:
+                if name not in advanced_types:
                     pair.addPair(name, '!')
 
             hardwarenames = []
             for name, slots in node.hardware_types.iteritems():
-                if not name in advanced_hardware:
+                if name not in advanced_hardware:
                     pair.addPair('!', name)
 
             for hardware_name, slots in node.hardware_types.iteritems():
                 add_site_hardware(cmurn, hardware_name)
                 for sliver_name in node.sliver_types:
-                    if not is_basic or (not sliver_name in advanced_types and
-                                        not hardware_name in advanced_hardware):
+                    if (not is_basic or
+                        (sliver_name not in advanced_types and
+                         hardware_name not in advanced_hardware)):
                         pair.addPair(sliver_name, hardware_name)
     for cmurn, pair in pairMap.iteritems():
         for sliver_name, hardware_name in pair.getPairs(is_basic):
@@ -207,7 +208,7 @@ def add_site_hardware(urn, name):
 
 
 def add_site(urn):
-    if not urn in site_info:
+    if urn not in site_info:
         site_info[urn] = {'types': {}, 'hardware': {}}
     return site_info[urn]
 
@@ -223,7 +224,9 @@ def calculate_type_link(is_basic, ads, aggregateNames):
     if len(link_info['tunnel']) > 0:
         tunnelOk = []
         for urn in aggregateNames:
-            if urn in aggregates['types'] and aggregates['types'][urn] == 'ig' and not urn in no_link:
+            if (urn in aggregates['types'] and
+                    aggregates['types'][urn] == 'ig' and
+                    urn not in no_link):
                 tunnelOk.append(urn)
         if len(tunnelOk) > 0:
             result.append({
@@ -233,7 +236,7 @@ def calculate_type_link(is_basic, ads, aggregateNames):
             })
     if len(link_info['local']) > 0:
         for urn in aggregateNames:
-            if not urn in no_link:
+            if urn not in no_link:
                 result.append({
                   'node': {'aggregates': [urn]},
                   'link': {'linkTypes': link_info['local']},
@@ -298,7 +301,7 @@ def calculate_types(is_basic, ads):
     for ad in ads:
         for node in ad.nodes:
             for sliver_type in node.sliver_types:
-                if not sliver_type in found:
+                if sliver_type not in found:
                     result.append({'id': sliver_type,
                                    'name': sliver_type})
                     found[sliver_type] = 1
@@ -314,7 +317,7 @@ def calculate_images(is_basic, ads):
             for sliver_name, images in node.images.iteritems():
                 for image in images:
                     imageId = get_image_id(image, cmurn)
-                    if not imageId in found:
+                    if imageId not in found:
                         description = image.description
                         if description is None:
                             description = imageId
@@ -337,7 +340,7 @@ def calculate_hardware(is_basic, ads):
     for ad in ads:
         for node in ad.nodes:
             for name, slots in node.hardware_types.iteritems():
-                if not name in found:
+                if name not in found:
                     result.append({'id': name,
                                    'name': name})
                     found[name] = 1
@@ -356,7 +359,7 @@ def calculate_aggregates(is_basic, ads, aggregateNames):
             pieces = urn.split('+')
             if len(pieces) >= 1:
                 name = pieces[1]
-            if not urn in found:
+            if urn not in found:
                 aggregateNames.append(urn)
                 result.append({'id': urn,
                                'name': name})
@@ -370,7 +373,7 @@ def calculate_link_types(is_basic, ads):
     for ad in ads:
         for link in ad.links:
             for link_type in link.link_types:
-                if not link_type in found:
+                if link_type not in found:
                     result.append({'id': link_type,
                                    'name': link_type})
                     found[link_type] = 1
