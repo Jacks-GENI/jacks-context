@@ -56,6 +56,7 @@ python jacks-context.py --basic \
                         ig-utah \
                         ig-utahddc \
                         ig-utc \
+                        ig-uwashington \
                         ig-wisconsin \
                         pg-kentucky \
                         pg-utah \
