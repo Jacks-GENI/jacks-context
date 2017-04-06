@@ -45,20 +45,21 @@ context = config.buildContext()
 
 ##########################################################################
 
+
 class ConstraintPair:
     def __init__(self):
-        self.aCount = {};
-        self.bCount = {};
-        self.comboCount = {};
-        self.aSeen = {};
-        self.bSeen = {};
-        self.comboSeen = {};
+        self.aCount = {}
+        self.bCount = {}
+        self.comboCount = {}
+        self.aSeen = {}
+        self.bSeen = {}
+        self.comboSeen = {}
 
     # Reset seen markers because there is a new node
     def newNode(self):
-        self.aSeen = {};
-        self.bSeen = {};
-        self.comboSeen = {};
+        self.aSeen = {}
+        self.bSeen = {}
+        self.comboSeen = {}
 
     # Mark a combination as being available on this node
     def addPair(self, a, b):
@@ -98,6 +99,7 @@ class ConstraintPair:
                     result.append((a, b))
         return result
 
+
 def calculate_constraints(is_basic, ads, aggregateNames):
     result = []
     result.extend(calculate_type_image(is_basic, ads))
@@ -105,9 +107,10 @@ def calculate_constraints(is_basic, ads, aggregateNames):
     result.extend(calculate_type_link(is_basic, ads, aggregateNames))
     return result
 
+
 def get_image_id(image, cmurn):
-    #imageId = image.url
-    #if imageId is None:
+    # imageId = image.url
+    # if imageId is None:
     #  imageId = image.name
     imageId = image.name
     if cmurn in aggregates['types'] and aggregates['types'][cmurn] == 'ig':
@@ -151,6 +154,7 @@ def calculate_type_image(is_basic, ads):
             })
     return result
 
+
 def calculate_type_hardware(is_basic, ads):
     pairMap = {}
     result = []
@@ -191,18 +195,22 @@ def calculate_type_hardware(is_basic, ads):
             })
     return result
 
+
 def add_site_type(urn, name):
     site = add_site(urn)
     site['types'][name] = True
+
 
 def add_site_hardware(urn, name):
     site = add_site(urn)
     site['hardware'][name] = True
 
+
 def add_site(urn):
     if not urn in site_info:
-        site_info[urn] = { 'types': {}, 'hardware': {} }
+        site_info[urn] = {'types': {}, 'hardware': {}}
     return site_info[urn]
+
 
 def calculate_type_link(is_basic, ads, aggregateNames):
     result = []
@@ -219,20 +227,21 @@ def calculate_type_link(is_basic, ads, aggregateNames):
                 tunnelOk.append(urn)
         if len(tunnelOk) > 0:
             result.append({
-              'node': { 'aggregates': tunnelOk },
-              'link': { 'linkTypes': link_info['tunnel'] },
-              'node2': { 'aggregates': tunnelOk }
+              'node': {'aggregates': tunnelOk},
+              'link': {'linkTypes': link_info['tunnel']},
+              'node2': {'aggregates': tunnelOk}
             })
     if len(link_info['local']) > 0:
         for urn in aggregateNames:
             if not urn in no_link:
                 result.append({
-                  'node': { 'aggregates': [urn] },
-                  'link': { 'linkTypes': link_info['local'] },
-                  'node2': { 'aggregates': [urn] }
+                  'node': {'aggregates': [urn]},
+                  'link': {'linkTypes': link_info['local']},
+                  'node2': {'aggregates': [urn]}
                 })
 
     return result
+
 
 def add_stitchable_constraints(list, linkType, result):
     for urn in list:
@@ -250,6 +259,7 @@ def add_stitchable_constraints(list, linkType, result):
               }
             })
 
+
 def find_not(list, without):
     result = []
     for item in list:
@@ -258,6 +268,7 @@ def find_not(list, without):
     return result
 
 ##########################################################################
+
 
 def calculate_canvas(is_basic, ads, aggregateNames):
     result = {
@@ -275,9 +286,11 @@ def calculate_canvas(is_basic, ads, aggregateNames):
     result['types'].extend(calculate_types(is_basic, ads))
     result['images'].extend(calculate_images(is_basic, ads))
     result['hardware'].extend(calculate_hardware(is_basic, ads))
-    result['aggregates'].extend(calculate_aggregates(is_basic, ads, aggregateNames))
+    result['aggregates'].extend(calculate_aggregates(is_basic, ads,
+                                                     aggregateNames))
     result['linkTypes'].extend(calculate_link_types(is_basic, ads))
     return result
+
 
 def calculate_types(is_basic, ads):
     found = make_initial_found(is_basic, advanced_types)
@@ -286,10 +299,11 @@ def calculate_types(is_basic, ads):
         for node in ad.nodes:
             for sliver_type in node.sliver_types:
                 if not sliver_type in found:
-                    result.append({ 'id': sliver_type,
-                                    'name': sliver_type })
+                    result.append({'id': sliver_type,
+                                   'name': sliver_type})
                     found[sliver_type] = 1
     return result
+
 
 def calculate_images(is_basic, ads):
     found = make_initial_found(is_basic, advanced_images)
@@ -308,13 +322,14 @@ def calculate_images(is_basic, ads):
                         # so change them to the image id, which is a name
                         if description in ['standard', 'custom']:
                             description = imageId
-                        imageResult = { 'id': imageId,
-                                        'name': description }
+                        imageResult = {'id': imageId,
+                                       'name': description}
                         if imageId in nomac_images:
                             imageResult['nomac'] = True
                         result.append(imageResult)
                         found[imageId] = 1
     return result
+
 
 def calculate_hardware(is_basic, ads):
     found = make_initial_found(is_basic, advanced_hardware)
@@ -323,10 +338,11 @@ def calculate_hardware(is_basic, ads):
         for node in ad.nodes:
             for name, slots in node.hardware_types.iteritems():
                 if not name in found:
-                    result.append({ 'id': name,
-                                    'name': name })
+                    result.append({'id': name,
+                                   'name': name})
                     found[name] = 1
     return result
+
 
 def calculate_aggregates(is_basic, ads, aggregateNames):
     found = {}
@@ -342,10 +358,11 @@ def calculate_aggregates(is_basic, ads, aggregateNames):
                 name = pieces[1]
             if not urn in found:
                 aggregateNames.append(urn)
-                result.append({ 'id': urn,
-                                'name': name })
+                result.append({'id': urn,
+                               'name': name})
                 found[urn] = 1
     return result
+
 
 def calculate_link_types(is_basic, ads):
     found = make_initial_found(is_basic, advanced_link_types)
@@ -354,10 +371,11 @@ def calculate_link_types(is_basic, ads):
         for link in ad.links:
             for link_type in link.link_types:
                 if not link_type in found:
-                    result.append({ 'id': link_type,
-                                    'name': link_type })
+                    result.append({'id': link_type,
+                                   'name': link_type})
                     found[link_type] = 1
     return result
+
 
 def calculate_site_info(is_basic):
     result = {}
@@ -366,6 +384,7 @@ def calculate_site_info(is_basic):
         result[key]['types'] = site_info[key]['types'].keys()
         result[key]['hardware'] = site_info[key]['hardware'].keys()
     return result
+
 
 def make_initial_found(is_basic, advanced_list):
     result = {}
@@ -376,6 +395,7 @@ def make_initial_found(is_basic, advanced_list):
 
 ##########################################################################
 
+
 def calculate_context(is_basic, ads):
     aggregateNames = []
     canvas = calculate_canvas(is_basic, ads, aggregateNames)
@@ -384,9 +404,10 @@ def calculate_context(is_basic, ads):
         constraints.extend(extra['constraints'])
     canvas['site_info'] = calculate_site_info(is_basic)
     return {'canvasOptions': canvas,
-            'constraints': constraints }
+            'constraints': constraints}
 
-def get_advertisement (context, site, pipe, rspec_dir=None):
+
+def get_advertisement(context, site, pipe, rspec_dir=None):
     try:
         ad = site.listresources(context)
         sys.stderr.write("[%s] Fetched Advertisement\n" % (site.name))
@@ -398,14 +419,16 @@ def get_advertisement (context, site, pipe, rspec_dir=None):
             rspec_path = os.path.join(rspec_dir, site.name)
             with open(rspec_path, 'w') as f:
                 f.write(ad.text)
-            sys.stderr.write("[%s] Wrote rspec to %s\n" % (site.name, rspec_path))
+            sys.stderr.write("[%s] Wrote rspec to %s\n" % (site.name,
+                                                           rspec_path))
     except Exception, e:
         pipe.send([])
         sys.stderr.write("[%s] OFFLINE\n" % (site.name))
     finally:
         pipe.close()
 
-def do_parallel (is_basic=True, sites=[], output=None, rspec_dir=None):
+
+def do_parallel(is_basic=True, sites=[], output=None, rspec_dir=None):
     aggmapping = dict()
     # Note later updates will override earlier entries if they have the
     # same key.
@@ -453,8 +476,11 @@ def do_parallel (is_basic=True, sites=[], output=None, rspec_dir=None):
         print json_text
     sys.stderr.write("Processing complete\n")
 
+
 def parse_config(file, is_basic):
-    global advanced_types, advanced_hardware, advanced_images, advanced_link_types, extra, nomac_images, no_link, stitchable_ig, stitchable_eg, link_info, aggregates
+    global advanced_types, advanced_hardware, advanced_images
+    global advanced_link_types, extra, nomac_images, no_link
+    global stitchable_ig, stitchable_eg, link_info, aggregates
     f = open(file, 'r')
     jsonText = f.read()
     f.close()
@@ -485,8 +511,9 @@ def parse_config(file, is_basic):
     if 'link_info' in config:
         link_info = config['link_info']
 
+
 if __name__ == '__main__':
-#  global context
+    #  global context
     parser = ArgumentParser()
     parser.add_argument('--config', dest='config', default=None,
                         help='Configuration file (json) for extra constraints')
@@ -499,7 +526,9 @@ if __name__ == '__main__':
                         help='Directory for rspecs for debugging')
     parser.add_argument('site', nargs='+',
                         help='InstaGENI Site names ex: ig-utah')
-    parser.add_argument('--debug', dest='debug', default=False, const=True, action='store_const', help='Print extra debugging information')
+    parser.add_argument('--debug', dest='debug', default=False, const=True,
+                        action='store_const',
+                        help='Print extra debugging information')
     args = parser.parse_args()
     if args.debug:
         context.debug = True
