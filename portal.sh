@@ -20,7 +20,6 @@ python jacks-context.py --basic \
                         eg-rci \
                         eg-sl \
                         eg-tamu \
-                        eg-ucd \
                         eg-ufl \
                         eg-uh \
                         eg-wsu \
