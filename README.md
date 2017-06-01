@@ -13,8 +13,11 @@ jacks-context.py -- The script itself
 
 ## Usage
 
-Make sure that you have a geni-lib config.py in the same directory as
-your script. Run it as follows:
+Make sure that you
+[create a geni-lib context](http://geni-lib.readthedocs.io/en/latest/tutorials/portalcontext.html)
+before running the generation script.
+
+Run it as follows:
 
     jacks-context.py [-h] [--config CONFIG] [--output OUTPUT] [--basic]
                             site [site ...]
@@ -25,4 +28,3 @@ your script. Run it as follows:
 * `--basic` mode ignores types and options set as advanced in the
   configuration file.
 * `site` is a geni-lib nickname for an IG aggregate (ex: ig-utah)
-

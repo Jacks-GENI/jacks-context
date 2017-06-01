@@ -18,6 +18,7 @@ import geni.aggregate.protogeni as PG
 import geni.aggregate.cloudlab as CL
 import geni.aggregate.apt as APT
 from geni.rspec.pgad import Advertisement
+import geni.util
 
 extra = {}
 advanced_types = []
@@ -41,7 +42,7 @@ link_info = {
 site_info = {}
 debug = False
 
-context = config.buildContext()
+context = geni.util.loadContext(key_passphrase=True)
 
 ##########################################################################
 
