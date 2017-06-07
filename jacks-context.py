@@ -16,6 +16,7 @@ import geni.aggregate.opengeni as OG
 import geni.aggregate.protogeni as PG
 import geni.aggregate.cloudlab as CL
 import geni.aggregate.apt as APT
+from geni.aggregate.frameworks import KeyDecryptionError
 from geni.rspec.pgad import Advertisement
 import geni.util
 
@@ -41,7 +42,20 @@ link_info = {
 site_info = {}
 debug = False
 
-context = geni.util.loadContext(key_passphrase=True)
+# --------------------------------------------------
+# Load the user's context, which includes their certificate
+# and private key.
+
+try:
+    # Determine whether the key is passphrase protected
+    # based on the exception thrown.
+    context = geni.util.loadContext(key_passphrase='NotThePassword')
+except TypeError:
+    # Key has no passphrase, just load it
+    context = geni.util.loadContext()
+except KeyDecryptionError:
+    # Passphrase protected key, prompt for passphrase
+    context = geni.util.loadContext(key_passphrase=True)
 
 ##########################################################################
 
