@@ -10,7 +10,6 @@ import sys
 import os
 import tempfile
 
-import config
 import geni.aggregate.instageni as IG
 import geni.aggregate.exogeni as EXO
 import geni.aggregate.opengeni as OG
