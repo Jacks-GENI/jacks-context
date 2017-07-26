@@ -10,12 +10,7 @@ import sys
 import os
 import tempfile
 
-import geni.aggregate.instageni as IG
-import geni.aggregate.exogeni as EXO
-import geni.aggregate.opengeni as OG
-import geni.aggregate.protogeni as PG
-import geni.aggregate.cloudlab as CL
-import geni.aggregate.apt as APT
+import geni.aggregate
 from geni.aggregate.frameworks import KeyDecryptionError
 from geni.rspec.pgad import Advertisement
 import geni.util
@@ -445,25 +440,15 @@ def get_advertisement(context, site, pipe, rspec_dir=None):
         pipe.close()
 
 
-def do_parallel(is_basic=True, sites=[], output=None, rspec_dir=None):
-    aggmapping = dict()
+def do_parallel(is_basic=True, output=None, rspec_dir=None):
     # Note later updates will override earlier entries if they have the
     # same key.
-    aggmapping.update(APT.name_to_aggregate())
-    aggmapping.update(CL.name_to_aggregate())
-    aggmapping.update(PG.name_to_aggregate())
-    aggmapping.update(OG.name_to_aggregate())
-    aggmapping.update(EXO.name_to_aggregate())
-    aggmapping.update(IG.name_to_aggregate())
+    sites = geni.aggregate.loadFromRegistry(context)
     children = []
     pipes = []
     ads = []
     adFiles = []
-    for site_name in sites:
-        site = None
-        if site_name in aggmapping:
-            site = aggmapping[site_name]
-        if site:
+    for site in sites.itervalues():
             pipe_parent, pipe_child = MP.Pipe(False)
             pipes.append(pipe_parent)
             p = MP.Process(target=get_advertisement,
@@ -540,8 +525,6 @@ if __name__ == '__main__':
                         help='Hide advanced options')
     parser.add_argument('--rspecdir', dest='rspecdir', default=None,
                         help='Directory for rspecs for debugging')
-    parser.add_argument('site', nargs='+',
-                        help='InstaGENI Site names ex: ig-utah')
     parser.add_argument('--debug', dest='debug', default=False, const=True,
                         action='store_const',
                         help='Print extra debugging information')
@@ -551,5 +534,5 @@ if __name__ == '__main__':
 
     if args.config:
         parse_config(args.config, args.basic)
-    do_parallel(is_basic=args.basic, sites=args.site, output=args.output,
+    do_parallel(is_basic=args.basic, output=args.output,
                 rspec_dir=args.rspecdir)
