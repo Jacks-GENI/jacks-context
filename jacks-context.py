@@ -35,6 +35,7 @@ link_info = {
   'stitch-eg': []
 }
 site_info = {}
+I2Switches = {}
 debug = False
 
 # --------------------------------------------------
@@ -113,8 +114,10 @@ def calculate_constraints(is_basic, ads, aggregateNames):
     result = []
     result.extend(calculate_type_image(is_basic, ads))
     result.extend(calculate_type_hardware(is_basic, ads))
+    calculate_stitching_constraints(is_basic,ads)
     result.extend(calculate_type_link(is_basic, ads, aggregateNames))
     return result
+
 
 
 def get_image_id(image, cmurn):
@@ -127,6 +130,33 @@ def get_image_id(image, cmurn):
         baseId = urn.split('+')[-1]
         imageId = 'urn:publicid:IDN+emulab.net+image+' + baseId
     return imageId
+
+def calculate_stitching_constraints(is_basic,ads):
+    for ad in ads:
+        stitch_info = ad.stitchinfo
+	if(stitch_info is not None):
+	 try:
+       		agginfos = stitch_info.aggregates
+		for urn,agginfo in agginfos.iteritems():
+		  for aggNode in agginfo.nodes:
+		  	for aggPort in aggNode.ports:
+			  for aggLink in aggPort.links:
+			   I2Con = aggLink.al2sinfo
+			   if(I2Con is not None):
+		 		I2Con = ':'.join(I2Con)
+				if(I2Con in I2Switches.keys()):
+				  if(urn.startswith("urn:publicid:IDN+exogeni.net:") and urn.endswith("Net+authority+am")):
+					urn = urn.replace("Net","vmsite")
+				  if(urn not in I2Switches[I2Con]):
+			  		(I2Switches[I2Con]).append(urn)
+					add_site_I2Connector(urn, I2Con)
+				else:
+					I2Switches[I2Con] = [urn]
+					add_site_I2Connector(urn, I2Con)
+	 except Exception as e:
+		print "Exception for "+urn+" happened "+str(e)
+		continue
+    return
 
 
 def calculate_type_image(is_basic, ads):
@@ -215,6 +245,11 @@ def add_site_hardware(urn, name):
     site = add_site(urn)
     site['hardware'][name] = True
 
+def add_site_I2Connector(urn, name):
+    site = add_site(urn)
+    site['I2Connector'] = name
+
+
 
 def add_site(urn):
     if urn not in site_info:
@@ -256,8 +291,13 @@ def calculate_type_link(is_basic, ads, aggregateNames):
 
 
 def add_stitchable_constraints(list, linkType, result):
+    to_exclude = []
     for urn in list:
-        others = find_not(list, urn)
+	try:
+		to_exclude = I2Switches[site_info[urn]['I2Connector']]
+	except KeyError as e:
+		to_exclude = [urn]
+        others = find_not(list,to_exclude)
         if len(others) > 0:
             result.append({
               'node': {
@@ -275,7 +315,7 @@ def add_stitchable_constraints(list, linkType, result):
 def find_not(list, without):
     result = []
     for item in list:
-        if item != without:
+        if item not in without:
             result.append(item)
     return result
 
@@ -420,6 +460,7 @@ def calculate_context(is_basic, ads):
 
 
 def get_advertisement(context, site, pipe, rspec_dir=None):
+#    ad = site.listresources(context)
     try:
         ad = site.listresources(context)
         sys.stderr.write("[%s] Fetched Advertisement\n" % (site.name))
